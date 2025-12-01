@@ -1,4 +1,10 @@
+import {
+    IconBrandGithub,
+    IconBrandLinkedin,
+    IconMail,
+} from '@tabler/icons-react';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 export function Footer() {
     return (
@@ -10,31 +16,37 @@ export function Footer() {
                         passion
                     </p>
                     <div className="flex items-center gap-1">
-                        <a
-                            href="https://github.com"
+                        <Link
+                            href={
+                                process.env.NEXT_PUBLIC_GITHUB_URL ||
+                                'https://github.com'
+                            }
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             aria-label="GitHub"
                         >
-                            <Github className="size-4" />
-                        </a>
-                        <a
-                            href="https://linkedin.com"
+                            <IconBrandGithub className="size-5" />
+                        </Link>
+                        <Link
+                            href={
+                                process.env.NEXT_PUBLIC_LINKEDIN_URL ||
+                                'https://linkedin.com'
+                            }
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             aria-label="LinkedIn"
                         >
-                            <Linkedin className="size-4" />
-                        </a>
-                        <a
-                            href="mailto:contact@example.com"
+                            <IconBrandLinkedin className="size-5" />
+                        </Link>
+                        <Link
+                            href={`mailto:${process.env.NEXT_PUBLIC_EMAIL}`}
                             className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             aria-label="Email"
                         >
-                            <Mail className="size-4" />
-                        </a>
+                            <IconMail className="size-5" />
+                        </Link>
                     </div>
                 </div>
             </div>
