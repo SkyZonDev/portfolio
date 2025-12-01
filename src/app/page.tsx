@@ -73,7 +73,7 @@ export default function Home() {
                                 href="/projects"
                                 className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50 hover:border-border"
                             >
-                                <div className="aspect-[16/10] bg-gradient-to-br from-muted to-muted/50 p-8 flex items-center justify-center">
+                                <div className="aspect-16/10 bg-linear-to-br from-muted to-muted/50 p-8 flex items-center justify-center">
                                     <div className="size-16 rounded-2xl bg-primary flex items-center justify-center rotate-3 group-hover:rotate-6 transition-transform">
                                         <Code2 className="size-8 text-primary-foreground" />
                                     </div>
@@ -99,7 +99,7 @@ export default function Home() {
                                 href="/projects"
                                 className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50 hover:border-border"
                             >
-                                <div className="aspect-[16/10] bg-gradient-to-br from-accent to-accent/50 p-8 flex items-center justify-center">
+                                <div className="aspect-16/10 bg-linear-to-br from-accent to-accent/50 p-8 flex items-center justify-center">
                                     <div className="size-16 rounded-2xl bg-primary flex items-center justify-center -rotate-3 group-hover:-rotate-6 transition-transform">
                                         <Sparkles className="size-8 text-primary-foreground" />
                                     </div>
