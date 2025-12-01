@@ -60,7 +60,7 @@ export function Navbar() {
                             Mon Portfolio
                         </span>
                         <span className="hidden sm:inline-block text-sm text-muted-foreground">
-                            by Jean-Pierre Dupuis
+                            par Jean-Pierre Dupuis
                         </span>
                     </div>
                 </Link>
