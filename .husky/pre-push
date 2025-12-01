@@ -1,0 +1,103 @@
+#!/bin/bash
+# .husky/pre-push
+
+echo "🚀 Vérification pre-push..."
+
+# Fonction pour vérifier si des fichiers de code source ont été modifiés
+check_source_files_changed() {
+    # Récupérer les fichiers modifiés dans le push
+    local changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached)
+
+    # Vérifier s'il y a des fichiers de code source ou de configuration
+    echo "$changed_files" | grep -E '\.(ts|tsx|js|jsx|json|css|scss|sass|md)$' > /dev/null
+    return $?
+}
+
+# Fonction pour vérifier si des fichiers critiques ont été modifiés
+check_critical_files_changed() {
+    local changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached)
+
+    # Vérifier s'il y a des fichiers critiques qui nécessitent une build
+    # Exclure package.json seul, mais inclure les autres configs importantes
+    echo "$changed_files" | grep -E '\.(ts|tsx|js|jsx|css|scss|sass)$' | grep -E '(src/|public/|next\.config|tailwind\.config|postcss\.config|tsconfig\.json)' > /dev/null
+    return $?
+}
+
+# Fonction pour vérifier si seulement package.json a été modifié
+check_only_package_json_changed() {
+    local changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached)
+    local file_count=$(echo "$changed_files" | wc -l)
+
+    # Si un seul fichier modifié et c'est package.json
+    if [ "$file_count" -eq 1 ] && echo "$changed_files" | grep -q "package\.json"; then
+        return 0
+    fi
+    return 1
+}
+
+# Fonction pour vérifier si des changements de dépendances nécessitent une build
+check_dependency_changes() {
+    local changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached)
+
+    # Si package.json est modifié, vérifier s'il y a des changements de dépendances
+    if echo "$changed_files" | grep -q "package\.json"; then
+        # Vérifier s'il y a des changements dans les dépendances (dependencies/devDependencies)
+        git diff --cached package.json | grep -E '^[+-].*"(dependencies|devDependencies)"' > /dev/null
+        return $?
+    fi
+    return 1
+}
+
+clean_build() {
+    echo "🧹 Nettoyage du dossier .next..."
+    # Détection de l'environnement d'exécution et suppression adaptée
+    if command -v rm >/dev/null 2>&1; then
+        rm -rf .next
+    elif command -v powershell.exe >/dev/null 2>&1; then
+        powershell.exe -Command "Remove-Item -Recurse -Force .next"
+    elif command -v cmd.exe >/dev/null 2>&1; then
+        cmd.exe /C "rmdir /s /q .next"
+    else
+        echo "⚠️ Impossible de nettoyer le dossier .next : commande inconnue."
+    fi
+}
+
+# Vérifier si seulement package.json a été modifié (sans changements de dépendances)
+if check_only_package_json_changed && ! check_dependency_changes; then
+    echo "ℹ️  Seul package.json modifié (sans changements de dépendances). Build ignorée."
+    echo "✅ Pre-push validé !"
+    exit 0
+fi
+
+# Vérifier si des fichiers nécessitant une build ont été modifiés
+if ! check_critical_files_changed && ! check_dependency_changes; then
+    echo "ℹ️  Aucun fichier critique modifié. Build ignorée."
+    echo "✅ Pre-push validé !"
+    exit 0
+fi
+
+echo "📁 Fichiers critiques détectés. Lancement de la build..."
+
+# Vérifier que tous les tests passent
+# if [ -f "package.json" ]; then
+#     echo "🧪 Lancement des tests complets..."
+#     pnpm test
+#     if [ $? -ne 0 ]; then
+#         echo "❌ Tests échoués. Push annulé."
+#         exit 1
+#     fi
+# fi
+
+# Vérifier la build
+if [ -f "package.json" ]; then
+    echo "🏗️ Vérification de la build..."
+    pnpm build
+    if [ $? -ne 0 ]; then
+        clean_build
+        echo "❌ Build échouée. Push annulé."
+        exit 1
+    fi
+    clean_build
+fi
+
+echo "✅ Pre-push validé !"

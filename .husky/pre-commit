@@ -1,0 +1,73 @@
+#!/bin/bash
+# .husky/pre-commit
+
+echo "🔍 Vérification pre-commit..."
+
+# Fonction pour vérifier si des fichiers de code source ont été modifiés
+check_source_files_changed() {
+    # Récupérer les fichiers modifiés (staged)
+    local changed_files=$(git diff --cached --name-only)
+
+    # Vérifier s'il y a des fichiers de code source
+    echo "$changed_files" | grep -E '\.(ts|tsx|js|jsx)$' > /dev/null
+    return $?
+}
+
+# Fonction pour vérifier si des fichiers de configuration ont été modifiés
+check_config_files_changed() {
+    local changed_files=$(git diff --cached --name-only)
+
+    # Vérifier s'il y a des fichiers de configuration qui affectent le linting/formatting
+    echo "$changed_files" | grep -E '\.(json|js|ts)$' | grep -E '(tsconfig\.json|eslint\.config|prettier\.config)' > /dev/null
+    return $?
+}
+
+# Fonction pour vérifier si package.json seul a été modifié
+check_only_package_json_changed() {
+    local changed_files=$(git diff --cached --name-only)
+    local file_count=$(echo "$changed_files" | wc -l)
+
+    # Si un seul fichier modifié et c'est package.json
+    if [ "$file_count" -eq 1 ] && echo "$changed_files" | grep -q "package\.json"; then
+        return 0
+    fi
+    return 1
+}
+
+# Vérifier si seulement package.json a été modifié
+if check_only_package_json_changed; then
+    echo "ℹ️  Seul package.json modifié. Pre-commit ignoré (pas de vérification de code nécessaire)."
+    echo "✅ Pre-commit validé !"
+    exit 0
+fi
+
+# Vérifier si des fichiers de code source ou de configuration ont été modifiés
+if ! check_source_files_changed && ! check_config_files_changed; then
+    echo "ℹ️  Aucun fichier de code source modifié. Pre-commit ignoré."
+    echo "✅ Pre-commit validé !"
+    exit 0
+fi
+
+echo "📁 Fichiers de code source détectés. Lancement des vérifications..."
+
+# Lancer uniquement le lint
+if [ -f "package.json" ]; then
+    echo "🧹 Lancement du lint..."
+    pnpm lint
+    if [ $? -ne 0 ]; then
+        echo "❌ Linting échoué. Commit annulé."
+        exit 1
+    fi
+fi
+
+# Vérifier les types TypeScript
+if [ -f "tsconfig.json" ]; then
+    echo "📝 Vérification des types TypeScript..."
+    pnpm typecheck
+    if [ $? -ne 0 ]; then
+        echo "❌ Erreurs TypeScript. Commit annulé."
+        exit 1
+    fi
+fi
+
+echo "✅ Pre-commit validé !"
