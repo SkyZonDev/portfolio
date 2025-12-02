@@ -2,6 +2,7 @@
 
 import { useForm } from '@tanstack/react-form';
 import { Send } from 'lucide-react';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { ErrorForm } from '@/components/shared/error-form';
 import { Button } from '@/components/ui/button';
@@ -12,15 +13,7 @@ import {
 } from '@/components/ui/input-group';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-
-const contactFormSchema = z.object({
-    name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
-    email: z.email('Veuillez entrer une adresse email valide'),
-    subject: z.string().min(3, 'Le sujet doit contenir au moins 3 caractères'),
-    message: z
-        .string()
-        .min(10, 'Le message doit contenir au moins 10 caractères'),
-});
+import { contactFormSchema } from '@/lib/validations/contact';
 
 export function ContactForm() {
     const form = useForm({
@@ -31,9 +24,15 @@ export function ContactForm() {
             message: '',
         },
         onSubmit: async ({ value }) => {
-            // TODO: Implémenter l'envoi du formulaire
-            console.log('Formulaire soumis:', value);
-            // Exemple: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(value) })
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                body: JSON.stringify(value),
+            });
+            if (response.ok) {
+                toast.success('Message envoyé avec succès');
+            } else {
+                toast.error("Erreur lors de l'envoi du message");
+            }
         },
     });
 
