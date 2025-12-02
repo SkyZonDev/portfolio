@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
+import { Footer } from '@/components/navigation/footer';
+import { Navbar } from '@/components/navigation/navbar';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Toaster } from 'sonner';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -50,8 +55,23 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <Navbar />
                     {children}
+                    <Toaster
+                        position="bottom-right"
+                        theme="system"
+                        richColors
+                    />
+                    <Footer />
+
+                    {process.env.NODE_ENV === 'production' && <Analytics />}
+                    {process.env.NODE_ENV === 'production' && <SpeedInsights />}
                 </ThemeProvider>
             </body>
         </html>

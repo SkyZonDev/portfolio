@@ -1,0 +1,148 @@
+## Contexte & Objectifs
+
+Scolario est une plateforme SaaS complète dédiée à la gestion scolaire moderne, actuellement en développement (version bêta). Le projet est né d'un constat simple : les établissements scolaires ont besoin d'outils performants, fiables et intuitifs pour gérer leur quotidien.
+
+### Objectifs principaux
+
+- Créer une solution **cloud-native** avec une disponibilité cible de 99,9%
+- Intégrer l'**intelligence artificielle** pour optimiser les emplois du temps (Phase 2)
+- Offrir une **expérience mobile-first** pour tous les utilisateurs
+- Centraliser toute la communication école-famille sur une seule plateforme
+
+## Solution & Approche
+
+### Architecture technique
+
+Le projet repose sur une architecture moderne et scalable :
+
+- **Frontend** : Next.js 16 avec API Routes pour une future migration vers une API séparée
+- **Base de données** : PostgreSQL avec Drizzle ORM pour une gestion typée des données
+- **Cache** : Redis pour améliorer les performances et réduire la charge serveur
+
+### Fonctionnalités clés (MVP - Phase 1)
+
+#### 👥 Gestion des utilisateurs
+
+- CRUD complet pour les élèves et professeurs
+- Gestion des rôles et permissions
+- Authentification sécurisée
+
+#### 📅 Emploi du temps
+
+- Création et gestion d'emplois du temps statiques
+- Modifications manuelles en cas d'imprévus
+- _IA d'optimisation automatique prévue en Phase 2_
+
+#### 📱 Expérience mobile-first
+
+Interface responsive permettant aux parents, élèves et enseignants d'accéder aux informations depuis n'importe quel appareil.
+
+#### 📝 Notes et absences
+
+- Saisie des notes par les enseignants
+- Gestion des absences et retards
+- Suivi des présences
+
+#### 💬 Communication unifiée
+
+- Messagerie simple entre les différents acteurs
+- Notifications en temps réel
+- _Hub de messages avancé prévu en Phase 2_
+
+#### 📊 Analytics (Phase 2)
+
+_Tableaux de bord personnalisables et analytics avancés prévus dans la Phase 2 du développement._
+
+## Défis techniques en cours
+
+### Performance et scalabilité
+
+En prévision de milliers d'utilisateurs simultanés, nous mettons en place :
+
+- **Mise en cache intelligente** avec Redis pour réduire les requêtes base de données
+- **Server-side rendering** optimisé avec Next.js
+- **Lazy loading** des composants lourds
+- **Optimisation des images** avec le composant Next/Image
+
+### Sécurité
+
+- Authentification sécurisée avec tokens JWT
+- Gestion granulaire des permissions par rôle
+- Protection CSRF et XSS
+- Chiffrement des données sensibles
+- Conformité RGPD en cours d'implémentation
+
+## État actuel & Roadmap
+
+### Phase actuelle : MVP Core (Phase 1)
+
+Le projet est actuellement en développement actif pour atteindre les objectifs de la Phase 1 :
+
+- ✅ Architecture technique mise en place
+- 🔄 Développement des fonctionnalités core (gestion élèves/profs, EDT, notes, absences)
+- 🔄 Interface utilisateur responsive
+- 🔄 Conformité RGPD
+- 📊 **Objectif Phase 1** : 10 établissements pilotes, 1000 utilisateurs
+
+### Prochaines phases
+
+**Phase 2 (Mois 5-8)** : Différenciation
+
+- IA de réorganisation automatique des emplois du temps
+- Gamification élèves (v1)
+- Analytics de base
+- API publique
+- Multi-langues
+
+**Phase 3-4** : Scale et Leadership
+
+- IA prédictive (risques décrochage)
+- Marketplace modules tiers
+- Expansion européenne
+
+### Apprentissages & Compétences développées
+
+- **Architecture cloud-native** : Conception d'une application scalable dès le départ
+- **Planification produit** : Définition d'un PRD complet avec roadmap sur 18 mois
+- **Stack moderne** : Maîtrise de Next.js 16, Drizzle ORM, PostgreSQL, Redis
+- **Approche MVP** : Priorisation des fonctionnalités essentielles pour valider le concept
+- **DevOps** : Mise en place de pipelines CI/CD et monitoring (en cours)
+
+## Technologies en détail
+
+### Stack frontend
+
+- **Next.js 16** : Framework React
+- **TypeScript** : Typage strict pour éviter les erreurs
+- **Tailwind CSS** : Styling utility-first
+
+### Stack backend
+
+- **Drizzle ORM** : ORM TypeScript-first
+- **PostgreSQL** : Base de données relationnelle
+- **Redis** : Cache et sessions
+- **Zod** : Validation des données
+
+## Prochaines étapes immédiates
+
+### Court terme (Phase 1 - MVP Core)
+
+- Finalisation des fonctionnalités core (gestion élèves/profs, EDT, notes, absences)
+- Tests avec établissements pilotes
+- Conformité RGPD complète
+- Lancement version bêta publique
+
+### Moyen terme (Phase 2)
+
+- Implémentation de l'IA pour l'optimisation automatique des emplois du temps
+- Module de gamification pour les élèves
+- Analytics et tableaux de bord avancés
+- API publique pour intégrations tierces
+- Support multi-langues (EN/ES)
+
+### Long terme
+
+- Application mobile native (iOS/Android)
+- Intégrations avec systèmes tiers (ENT, logiciels comptables)
+- Module de paiement en ligne
+- Marketplace de modules complémentaires

@@ -1,0 +1,146 @@
+import MetricsTabs from './metrics';
+
+## Contexte & Objectifs
+
+RedLyon Racing Team est une écurie de course automobile qui avait besoin d'une présence web moderne et professionnelle pour présenter son équipe, ses actualités et attirer de nouveaux partenaires.
+
+### Besoins du client
+
+- Site vitrine **élégant et performant** reflétant l'image de l'écurie
+- Section **actualités** facilement gérable
+- **Formulaires de contact** pour les partenaires potentiels
+- Design **responsive** avec une forte identité visuelle
+- **SEO optimisé** pour améliorer la visibilité
+
+## Solution & Approche
+
+### Design & Expérience utilisateur
+
+Le design a été pensé pour capturer l'essence de la compétition automobile :
+
+- **Palette de couleurs** inspirée des couleurs de l'écurie (rouge et noir)
+- **Animations subtiles** pour dynamiser l'expérience sans nuire aux performances
+- **Typographie moderne** et lisible
+- **Photos de qualité** mises en valeur
+
+### Architecture du site
+
+```
+/
+├── Accueil
+├── A propos - Présentation de l'écurie
+├── L'équipe - Présentation du staff
+├── Nos Sponsors - Galerie des sponsors
+├── Blog - Articles de l'écurie
+├── Contact - Formulaires de contact
+└── Nos Projets - Galerie des projets
+```
+
+## Fonctionnalités développées
+
+### Système d'actualités
+
+Un CMS léger intégré permettant à l'équipe de publier facilement leurs actualités :
+
+- **Éditeur Markdown** pour le contenu
+- **Upload d'images** optimisées automatiquement
+- **Système de tags** pour catégoriser les articles
+- **Prévisualisation** avant publication
+
+### Formulaires intelligents
+
+Mise en place de formulaires avec validation côté client et serveur :
+
+- Formulaire de **contact général**
+- Formulaire **partenariat** avec champs spécifiques
+- **Validation en temps réel** avec React Hook Form
+- **Protection anti-spam**
+
+### Optimisations SEO
+
+- **Métadonnées dynamiques** pour chaque page
+- **Sitemap.xml** généré automatiquement
+- **Balises Open Graph** pour le partage sur les réseaux sociaux
+
+## Stack technique
+
+### Frontend moderne
+
+- **Next.js** : Framework React avec App Router
+- **Tailwind CSS** : Styling utility-first rapide et maintenable
+- **Shadcn/UI** : Composants accessibles et personnalisables
+- **Framer Motion** : Animations performantes
+
+### Gestion des formulaires
+
+- **@tanstack/react-form** : Gestion des formulaires performante
+- **Zod** : Validation des schémas
+- **Server Actions** : Traitement sécurisé côté serveur
+
+### DevOps & Déploiement
+
+- **GitLab CI/CD** : Pipeline automatisé
+- **Tests automatisés** avant déploiement
+- **Déploiement continu** sur production
+
+## Défis techniques
+
+### Performance
+
+Avec de nombreuses images haute qualité, l'optimisation était cruciale :
+
+- **Next/Image** pour l'optimisation automatique des images
+- **Lazy loading** des sections non critiques
+- **Compression WebP** pour réduire la taille des fichiers
+- **CDN** pour servir les assets statiques
+
+### Responsive Design
+
+Le site devait être parfait sur tous les appareils :
+
+- Design **mobile-first**
+- Breakpoints personnalisés pour tablettes
+- Navigation adaptative
+- Images responsive avec srcset
+
+## Résultats & Impact
+
+### Métriques de performance
+
+<MetricsTabs />
+
+### Impact business
+
+Depuis le lancement du site :
+
+- **+250% de visites** par rapport à l'ancien site
+- **Nouveau partenaires** attirés grâce au site professionnel
+- **Engagement** : temps moyen sur le site de 3min20s
+- **Taux de rebond** réduit de 60% à 28%
+
+### Témoignage client
+
+> "Le nouveau site reflète parfaitement notre ambition et notre professionnalisme. Nous avons reçu plusieurs demandes de partenariat depuis le lancement !"
+> — *Directeur de l'écurie RedLyon Racing*
+
+## Ce que j'ai appris
+
+### Compétences techniques
+
+- **Next.js App Router** : Maîtrise du nouveau paradigme de routing
+- **Animation web** : Créer des animations fluides sans impacter les performances
+- **GitLab CI/CD** : Mise en place de pipelines d'intégration continue
+
+### Compétences transversales
+
+- **Communication client** : Comprendre les besoins et y répondre efficacement
+- **Design thinking** : Penser l'expérience utilisateur avant le code
+- **Gestion de projet** : Respecter les délais tout en maintenant la qualité
+
+## Évolutions futures
+
+Le site continuera d'évoluer avec :
+
+- **Section Marketplace** : Intégration de la marketplace
+- **Espace membres** : Zone réservée aux sponsors et partenaires
+- **Multilingue** : Version anglaise du site
