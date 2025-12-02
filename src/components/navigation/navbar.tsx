@@ -4,17 +4,15 @@ import { Menu, Moon, Sparkles, Sun, X } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
     NavigationMenu,
-    NavigationMenuContent,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from '../shared/theme-toggle';
 
 export function Navbar() {
     const [mounted, setMounted] = useState(false);
@@ -56,10 +54,10 @@ export function Navbar() {
                         <Sparkles className="size-4 text-primary" />
                     </div>
                     <div className="flex flex-col leading-none items-start justify-center">
-                        <span className="hidden sm:inline-block">
+                        <span className="hidden sm:inline-block font-bold">
                             Mon Portfolio
                         </span>
-                        <span className="hidden sm:inline-block text-sm text-muted-foreground">
+                        <span className="hidden sm:inline-block text-xs text-muted-foreground">
                             par Jean-Pierre Dupuis
                         </span>
                     </div>

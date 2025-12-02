@@ -41,7 +41,7 @@ export function Footer() {
                             <IconBrandLinkedin className="size-5" />
                         </Link>
                         <Link
-                            href={`mailto:${process.env.NEXT_PUBLIC_EMAIL}`}
+                            href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
                             className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             aria-label="Email"
                         >
