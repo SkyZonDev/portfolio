@@ -13,19 +13,15 @@ import {
     EmptyTitle,
 } from '@/components/ui/empty';
 import { projects, stats } from '@/constants';
+import { ProjectCard } from './_components/project-card';
 
 export default function Projects() {
     const [selectedCategory, setSelectedCategory] = useState('Tous');
 
     const categories = [
-        'Tous',
-        'Web App',
-        'UI Library',
-        'E-commerce',
-        'Analytics',
-        'Mobile',
-        'Backend',
-    ];
+        ...new Set(projects.map((project) => project.category)),
+    ].sort((a, b) => a.localeCompare(b));
+    categories.unshift('Tous');
 
     const filteredProjects =
         selectedCategory === 'Tous'
@@ -102,7 +98,7 @@ export default function Projects() {
                         >
                             {categories.map((category, index) => (
                                 <MotionButton
-                                    key={category}
+                                    key={index}
                                     onClick={() =>
                                         setSelectedCategory(category)
                                     }
@@ -143,127 +139,13 @@ export default function Projects() {
                                 transition={{ duration: 0.3 }}
                             >
                                 {filteredProjects.length > 0 ? (
-                                    filteredProjects.map((project, index) => {
-                                        const Icon = project.icon;
-                                        return (
-                                            <motion.div
-                                                key={project.id}
-                                                layout
-                                                initial={{
-                                                    opacity: 0,
-                                                    y: 30,
-                                                }}
-                                                animate={{
-                                                    opacity: 1,
-                                                    y: 0,
-                                                }}
-                                                exit={{
-                                                    opacity: 0,
-                                                    y: -50,
-                                                }}
-                                                transition={{
-                                                    duration: 0,
-                                                    delay: index * 0.1,
-                                                    ease: [
-                                                        0.21, 0.47, 0.32, 0.98,
-                                                    ],
-                                                }}
-                                                whileHover={{
-                                                    y: -8,
-                                                    transition: {
-                                                        duration: 0.1,
-                                                    },
-                                                }}
-                                                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50"
-                                            >
-                                                {/* Project Image/Icon Area */}
-                                                <div
-                                                    className={`aspect-16/10 bg-linear-to-br ${project.gradient} p-8 flex items-center justify-center relative overflow-hidden`}
-                                                >
-                                                    <motion.div
-                                                        className={`size-16 rounded-2xl ${project.iconBg} flex items-center justify-center rotate-3`}
-                                                        whileHover={{
-                                                            rotate: 6,
-                                                            scale: 1.1,
-                                                        }}
-                                                        transition={{
-                                                            type: 'spring',
-                                                            stiffness: 300,
-                                                            damping: 20,
-                                                        }}
-                                                    >
-                                                        <Icon className="size-8 text-white" />
-                                                    </motion.div>
-
-                                                    {/* Category badge */}
-                                                    <div className="absolute top-4 right-4">
-                                                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-sm text-foreground border border-border">
-                                                            {project.category}
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                {/* Project Info */}
-                                                <div className="flex flex-col justify-between flex-1 h-full p-6 space-y-4">
-                                                    <div className="space-y-2">
-                                                        <h3 className="text-xl font-semibold text-card-foreground group-hover:text-primary transition-colors">
-                                                            {project.title}
-                                                        </h3>
-                                                        <p className="text-sm text-muted-foreground leading-relaxed">
-                                                            {
-                                                                project.description
-                                                            }
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="space-y-2">
-                                                        {/* Tech Stack */}
-                                                        <div className="flex flex-wrap gap-4">
-                                                            {project.tech.map(
-                                                                (tech) => (
-                                                                    <motion.span
-                                                                        key={
-                                                                            tech
-                                                                        }
-                                                                        whileHover={{
-                                                                            scale: 1.1,
-                                                                        }}
-                                                                        className="py-1 rounded-md text-xs font-medium bg-muted/50 text-muted-foreground"
-                                                                    >
-                                                                        {tech}
-                                                                    </motion.span>
-                                                                )
-                                                            )}
-                                                        </div>
-
-                                                        {/* Year and CTA */}
-                                                        <Link
-                                                            href={`/projects/${project.id}`}
-                                                            className="flex items-center justify-between pt-2 border-t border-border"
-                                                        >
-                                                            <span className="text-sm text-muted-foreground">
-                                                                {project.year}
-                                                            </span>
-                                                            <motion.button
-                                                                className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors group/btn"
-                                                                whileHover={{
-                                                                    x: 5,
-                                                                }}
-                                                                transition={{
-                                                                    type: 'spring',
-                                                                    stiffness: 400,
-                                                                    damping: 25,
-                                                                }}
-                                                            >
-                                                                Voir le projet
-                                                                <ArrowUpRight className="size-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                                                            </motion.button>
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                        );
-                                    })
+                                    filteredProjects.map((project, index) => (
+                                        <ProjectCard
+                                            key={index}
+                                            index={index}
+                                            project={project}
+                                        />
+                                    ))
                                 ) : (
                                     <div className="col-span-full">
                                         <Empty>

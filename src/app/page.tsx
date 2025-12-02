@@ -1,5 +1,12 @@
-import { IconStarFilled } from '@tabler/icons-react';
-import { ArrowRight, ArrowUpRight, Code2, Sparkles } from 'lucide-react';
+import { IconBrandGithub, IconStarFilled } from '@tabler/icons-react';
+import {
+    ArrowRight,
+    ArrowUpRight,
+    Code2,
+    ExternalLink,
+    Sparkles,
+} from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { projects } from '@/constants';
@@ -78,39 +85,125 @@ export default function Home() {
                                         <Link
                                             key={idx}
                                             href={`/projects/${project.id}`}
-                                            className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50 hover:border-border hover:-translate-y-2"
+                                            className="group relative overflow-hidden rounded-3xl border border-border/50 bg-linear-to-br from-card to-card/50 backdrop-blur-sm transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:border-border hover:-translate-y-2"
                                         >
-                                            <div
-                                                className={cn(
-                                                    'aspect-16/10 bg-linear-to-br p-8 flex items-center justify-center',
-                                                    project.gradient
+                                            {/* Image Background */}
+                                            <div className="relative aspect-video overflow-hidden">
+                                                {project.metadata?.image ? (
+                                                    <div className="relative w-full h-full">
+                                                        <Image
+                                                            src={`/projects/${project.metadata.image}`}
+                                                            alt={project.title}
+                                                            fill
+                                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div
+                                                        className={cn(
+                                                            'w-full h-full flex items-center justify-center',
+                                                            project.gradient
+                                                        )}
+                                                    >
+                                                        <div
+                                                            className={cn(
+                                                                'size-20 rounded-3xl flex items-center justify-center rotate-3 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110',
+                                                                project.iconBg
+                                                            )}
+                                                        >
+                                                            <Icon className="size-10 text-white" />
+                                                        </div>
+                                                    </div>
                                                 )}
-                                            >
-                                                <div
-                                                    className={cn(
-                                                        'size-16 rounded-2xl bg-primary flex items-center justify-center rotate-3 group-hover:rotate-6 transition-transform',
-                                                        project.iconBg
+
+                                                {/* Gradient Overlay */}
+                                                <div className="absolute inset-0 bg-linear-to-t from-background via-background/40 to-transparent" />
+
+                                                {/* Category Badge */}
+                                                <div className="absolute top-4 left-4">
+                                                    <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-background/90 backdrop-blur-md text-foreground border border-border/50 shadow-lg">
+                                                        {project.category}
+                                                    </span>
+                                                </div>
+
+                                                {/* Star Badge - Featured */}
+                                                <div className="absolute top-4 right-4">
+                                                    <div className="p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-lg">
+                                                        <IconStarFilled className="size-4 text-yellow-500" />
+                                                    </div>
+                                                </div>
+
+                                                {/* Hover Overlay avec Actions */}
+                                                <div className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                    {project.metadata?.url && (
+                                                        <Button
+                                                            size="icon"
+                                                            className="rounded-full p-5 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                                                            asChild
+                                                        >
+                                                            <span>
+                                                                <ExternalLink className="size-5" />
+                                                            </span>
+                                                        </Button>
                                                     )}
-                                                >
-                                                    <Icon className="size-8 text-white" />
+                                                    {project.metadata
+                                                        ?.github && (
+                                                        <Button
+                                                            size="icon"
+                                                            variant="outline"
+                                                            className="rounded-full p-5 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75"
+                                                            asChild
+                                                        >
+                                                            <span>
+                                                                <IconBrandGithub className="size-5" />
+                                                            </span>
+                                                        </Button>
+                                                    )}
                                                 </div>
                                             </div>
-                                            <div className="p-6 space-y-2">
-                                                <h3 className="text-xl font-semibold text-card-foreground flex items-center gap-2">
-                                                    {project.title}{' '}
-                                                    <IconStarFilled className="size-4 text-yellow-500" />
-                                                </h3>
-                                                <p className="text-sm text-muted-foreground">
-                                                    {project.description}
-                                                </p>
-                                                <div className="flex items-center gap-2 text-sm text-muted-foreground/60 pt-2">
-                                                    <span>{project.year}</span>
-                                                    <span>•</span>
-                                                    <span>
-                                                        {project.tech.join(
-                                                            ', '
+
+                                            {/* Content Area */}
+                                            <div className="flex flex-col justify-between p-6 space-y-4">
+                                                {/* Title & Description */}
+                                                <div className="space-y-2">
+                                                    <h3 className="text-2xl font-bold tracking-tight text-card-foreground group-hover:text-primary transition-colors duration-300">
+                                                        {project.title}
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                                                        {project.description}
+                                                    </p>
+                                                </div>
+
+                                                <div className="space-y-4">
+                                                    {/* Tech Stack Pills */}
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {project.tech.map(
+                                                            (techItem, i) => (
+                                                                <span
+                                                                    key={
+                                                                        techItem
+                                                                    }
+                                                                    className="px-3 py-1 rounded-lg text-xs font-medium bg-muted/80 text-muted-foreground border border-border/50 hover:bg-muted hover:border-border transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
+                                                                    style={{
+                                                                        transitionDelay: `${i * 50}ms`,
+                                                                    }}
+                                                                >
+                                                                    {techItem}
+                                                                </span>
+                                                            )
                                                         )}
-                                                    </span>
+                                                    </div>
+
+                                                    {/* Footer avec Year et CTA */}
+                                                    <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                                                        <span className="text-sm font-medium text-muted-foreground">
+                                                            {project.year}
+                                                        </span>
+                                                        <div className="flex items-center gap-2 text-sm font-semibold text-primary transition-all duration-300 group-hover:gap-3">
+                                                            Découvrir
+                                                            <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </Link>
