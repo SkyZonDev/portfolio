@@ -12,6 +12,7 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
+import { navbar } from '@/constants';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
@@ -67,36 +68,18 @@ export function Navbar() {
                 <div className="hidden md:flex md:items-center md:gap-6">
                     <NavigationMenu>
                         <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild>
-                                    <Link
-                                        href="/about"
-                                        className="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-active:bg-accent/50 data-[state=open]:bg-accent/50"
-                                    >
-                                        À propos
-                                    </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild>
-                                    <Link
-                                        href="/projects"
-                                        className="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-active:bg-accent/50 data-[state=open]:bg-accent/50"
-                                    >
-                                        Projets
-                                    </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild>
-                                    <Link
-                                        href="/contact"
-                                        className="group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-active:bg-accent/50 data-[state=open]:bg-accent/50"
-                                    >
-                                        Contact
-                                    </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
+                            {navbar.main_nav.map((link, idx) => (
+                                <NavigationMenuItem key={idx}>
+                                    <NavigationMenuLink asChild>
+                                        <Link
+                                            href={link.href}
+                                            className="group inline-flex h-9 w-max items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-active:bg-accent/50 data-[state=open]:bg-accent/50"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
+                            ))}
                         </NavigationMenuList>
                     </NavigationMenu>
 
@@ -104,7 +87,7 @@ export function Navbar() {
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
                         <Button size="sm" asChild>
-                            <Link href="/contact">Me soutenir</Link>
+                            <Link href="/">Me soutenir</Link>
                         </Button>
                     </div>
                 </div>

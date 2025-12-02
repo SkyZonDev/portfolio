@@ -5,7 +5,7 @@ commit_msg_file=$1
 commit_msg=$(cat "$commit_msg_file")
 
 # Regex pour valider le format
-commit_regex='^(feat|fix|docs|style|refactor|perf|test|chore|ci|build): .{1,100}$'
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|chore|ci|build): .{1,150}$'
 
 if ! echo "$commit_msg" | grep -qE "$commit_regex"; then
     echo "❌ Format de commit invalide !"
@@ -21,5 +21,6 @@ if ! echo "$commit_msg" | grep -qE "$commit_regex"; then
     echo "  docs: mettre à jour le README"
     echo ""
     exit 1
+fi
 
 echo "✅ Format de commit valide !"

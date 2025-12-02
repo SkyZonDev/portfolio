@@ -1,4 +1,10 @@
 import {
+    IconBrandGithub,
+    IconBrandLinkedin,
+    IconMail,
+    type TablerIcon,
+} from '@tabler/icons-react';
+import {
     Code2,
     Globe,
     Layers,
@@ -18,6 +24,29 @@ interface Project {
     icon: LucideIcon;
     gradient: string;
     iconBg: string;
+    featured: boolean;
+}
+
+interface Stats {
+    [key: string]: {
+        label: string;
+        value: number | string;
+    }[];
+}
+
+interface Navbar {
+    main_nav: {
+        label: string;
+        href: string;
+    }[];
+}
+
+interface Footer {
+    social: {
+        label: string;
+        href: string;
+        icon: TablerIcon;
+    }[];
 }
 
 export const projects: Project[] = [
@@ -32,6 +61,7 @@ export const projects: Project[] = [
         icon: Code2,
         gradient: 'from-blue-500/10 to-cyan-500/10',
         iconBg: 'bg-blue-500',
+        featured: true,
     },
     {
         id: 2,
@@ -44,6 +74,7 @@ export const projects: Project[] = [
         icon: Sparkles,
         gradient: 'from-purple-500/10 to-pink-500/10',
         iconBg: 'bg-purple-500',
+        featured: true,
     },
     {
         id: 3,
@@ -56,6 +87,7 @@ export const projects: Project[] = [
         icon: Globe,
         gradient: 'from-emerald-500/10 to-teal-500/10',
         iconBg: 'bg-emerald-500',
+        featured: false,
     },
     {
         id: 4,
@@ -68,6 +100,7 @@ export const projects: Project[] = [
         icon: Layers,
         gradient: 'from-orange-500/10 to-red-500/10',
         iconBg: 'bg-orange-500',
+        featured: false,
     },
     {
         id: 5,
@@ -80,6 +113,7 @@ export const projects: Project[] = [
         icon: Smartphone,
         gradient: 'from-indigo-500/10 to-violet-500/10',
         iconBg: 'bg-indigo-500',
+        featured: false,
     },
     {
         id: 6,
@@ -92,5 +126,65 @@ export const projects: Project[] = [
         icon: Zap,
         gradient: 'from-yellow-500/10 to-amber-500/10',
         iconBg: 'bg-yellow-500',
+        featured: false,
     },
 ];
+
+export const stats: Stats = {
+    projects: [
+        {
+            label: 'Qualité, performance & accessibilité',
+            value: 'Engagement',
+        },
+        {
+            label: "Années d'expérience",
+            value: '3+',
+        },
+        {
+            label: 'Clients satisfaits',
+            value: '15+',
+        },
+        {
+            label: 'Projets complétés',
+            value: '25+',
+        },
+    ],
+};
+
+export const navbar: Navbar = {
+    main_nav: [
+        {
+            label: 'À propos',
+            href: '/about',
+        },
+        {
+            label: 'Projets',
+            href: '/projects',
+        },
+        {
+            label: 'Contact',
+            href: '/contact',
+        },
+    ],
+};
+
+export const footer: Footer = {
+    social: [
+        {
+            label: 'GitHub',
+            href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com',
+            icon: IconBrandGithub,
+        },
+        {
+            label: 'LinkedIn',
+            href:
+                process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com',
+            icon: IconBrandLinkedin,
+        },
+        {
+            label: 'Email',
+            href: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`,
+            icon: IconMail,
+        },
+    ],
+};

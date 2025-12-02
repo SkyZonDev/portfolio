@@ -1,5 +1,9 @@
+import { IconStarFilled } from '@tabler/icons-react';
 import { ArrowRight, ArrowUpRight, Code2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { projects } from '@/constants';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
     return (
@@ -37,20 +41,18 @@ export default function Home() {
 
                         {/* Minimal CTA */}
                         <div className="flex items-center gap-4 pt-4">
-                            <Link
-                                href="/contact"
-                                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:gap-3"
-                            >
-                                Discutons de votre projet
-                                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                            </Link>
-                            <Link
-                                href="/projects"
-                                className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                            >
-                                Voir mes projets
-                                <ArrowUpRight className="size-4" />
-                            </Link>
+                            <Button asChild size="lg" className="rounded-xl">
+                                <Link href="/contact">
+                                    Discutons de votre projet
+                                    <ArrowRight className="size-4" />
+                                </Link>
+                            </Button>
+                            <Button variant="ghost" asChild>
+                                <Link href="/projects">
+                                    Voir mes projets
+                                    <ArrowUpRight className="size-4" />
+                                </Link>
+                            </Button>
                         </div>
                     </div>
                 </section>
@@ -68,56 +70,52 @@ export default function Home() {
                         </div>
 
                         <div className="grid gap-8 md:grid-cols-2">
-                            {/* Project Card 1 */}
-                            <Link
-                                href="/projects"
-                                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50 hover:border-border"
-                            >
-                                <div className="aspect-16/10 bg-linear-to-br from-muted to-muted/50 p-8 flex items-center justify-center">
-                                    <div className="size-16 rounded-2xl bg-primary flex items-center justify-center rotate-3 group-hover:rotate-6 transition-transform">
-                                        <Code2 className="size-8 text-primary-foreground" />
-                                    </div>
-                                </div>
-                                <div className="p-6 space-y-2">
-                                    <h3 className="text-xl font-semibold text-card-foreground">
-                                        Application SaaS
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Plateforme collaborative avec React &
-                                        Node.js
-                                    </p>
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground/60 pt-2">
-                                        <span>2024</span>
-                                        <span>•</span>
-                                        <span>Next.js</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            {/* Project Card 2 */}
-                            <Link
-                                href="/projects"
-                                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50 hover:border-border"
-                            >
-                                <div className="aspect-16/10 bg-linear-to-br from-accent to-accent/50 p-8 flex items-center justify-center">
-                                    <div className="size-16 rounded-2xl bg-primary flex items-center justify-center -rotate-3 group-hover:-rotate-6 transition-transform">
-                                        <Sparkles className="size-8 text-primary-foreground" />
-                                    </div>
-                                </div>
-                                <div className="p-6 space-y-2">
-                                    <h3 className="text-xl font-semibold text-card-foreground">
-                                        Design System
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground">
-                                        Librairie de composants réutilisables
-                                    </p>
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground/60 pt-2">
-                                        <span>2024</span>
-                                        <span>•</span>
-                                        <span>React</span>
-                                    </div>
-                                </div>
-                            </Link>
+                            {projects
+                                .filter((project) => project.featured)
+                                .map((project, idx) => {
+                                    const Icon = project.icon;
+                                    return (
+                                        <Link
+                                            key={idx}
+                                            href={`/projects/${project.id}`}
+                                            className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50 hover:border-border hover:-translate-y-2"
+                                        >
+                                            <div
+                                                className={cn(
+                                                    'aspect-16/10 bg-linear-to-br p-8 flex items-center justify-center',
+                                                    project.gradient
+                                                )}
+                                            >
+                                                <div
+                                                    className={cn(
+                                                        'size-16 rounded-2xl bg-primary flex items-center justify-center rotate-3 group-hover:rotate-6 transition-transform',
+                                                        project.iconBg
+                                                    )}
+                                                >
+                                                    <Icon className="size-8 text-white" />
+                                                </div>
+                                            </div>
+                                            <div className="p-6 space-y-2">
+                                                <h3 className="text-xl font-semibold text-card-foreground flex items-center gap-2">
+                                                    {project.title}{' '}
+                                                    <IconStarFilled className="size-4 text-yellow-500" />
+                                                </h3>
+                                                <p className="text-sm text-muted-foreground">
+                                                    {project.description}
+                                                </p>
+                                                <div className="flex items-center gap-2 text-sm text-muted-foreground/60 pt-2">
+                                                    <span>{project.year}</span>
+                                                    <span>•</span>
+                                                    <span>
+                                                        {project.tech.join(
+                                                            ', '
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
                         </div>
 
                         <div className="mt-12 text-center">

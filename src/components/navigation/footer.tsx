@@ -1,10 +1,5 @@
-import {
-    IconBrandGithub,
-    IconBrandLinkedin,
-    IconMail,
-} from '@tabler/icons-react';
-import { Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { footer } from '@/constants';
 
 export function Footer() {
     return (
@@ -16,37 +11,18 @@ export function Footer() {
                         passion
                     </p>
                     <div className="flex items-center gap-1">
-                        <Link
-                            href={
-                                process.env.NEXT_PUBLIC_GITHUB_URL ||
-                                'https://github.com'
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                            aria-label="GitHub"
-                        >
-                            <IconBrandGithub className="size-5" />
-                        </Link>
-                        <Link
-                            href={
-                                process.env.NEXT_PUBLIC_LINKEDIN_URL ||
-                                'https://linkedin.com'
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                            aria-label="LinkedIn"
-                        >
-                            <IconBrandLinkedin className="size-5" />
-                        </Link>
-                        <Link
-                            href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
-                            className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                            aria-label="Email"
-                        >
-                            <IconMail className="size-5" />
-                        </Link>
+                        {footer.social.map((social, idx) => (
+                            <Link
+                                key={idx}
+                                href={social.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                                aria-label={social.label}
+                            >
+                                <social.icon className="size-5" />
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>

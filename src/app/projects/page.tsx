@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, FolderX } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { MotionButton } from '@/components/ui/button-motion';
 import {
     Empty,
     EmptyDescription,
@@ -11,7 +12,7 @@ import {
     EmptyMedia,
     EmptyTitle,
 } from '@/components/ui/empty';
-import { projects } from './constants';
+import { projects, stats } from '@/constants';
 
 export default function Projects() {
     const [selectedCategory, setSelectedCategory] = useState('Tous');
@@ -100,7 +101,7 @@ export default function Projects() {
                             transition={{ duration: 0.5, delay: 0.4 }}
                         >
                             {categories.map((category, index) => (
-                                <motion.button
+                                <MotionButton
                                     key={category}
                                     onClick={() =>
                                         setSelectedCategory(category)
@@ -114,16 +115,16 @@ export default function Projects() {
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     className={`
-                                        px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all
+                                        rounded-2xl
                                         ${
                                             category === selectedCategory
-                                                ? 'bg-primary text-primary-foreground'
+                                                ? 'text-primary-foreground'
                                                 : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
                                         }
                                     `}
                                 >
                                     {category}
-                                </motion.button>
+                                </MotionButton>
                             ))}
                         </motion.div>
                     </div>
@@ -173,7 +174,7 @@ export default function Projects() {
                                                         duration: 0.1,
                                                     },
                                                 }}
-                                                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50"
+                                                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg hover:shadow-border/50"
                                             >
                                                 {/* Project Image/Icon Area */}
                                                 <div
@@ -203,7 +204,7 @@ export default function Projects() {
                                                 </div>
 
                                                 {/* Project Info */}
-                                                <div className="p-6 space-y-4">
+                                                <div className="flex flex-col justify-between flex-1 h-full p-6 space-y-4">
                                                     <div className="space-y-2">
                                                         <h3 className="text-xl font-semibold text-card-foreground group-hover:text-primary transition-colors">
                                                             {project.title}
@@ -215,42 +216,49 @@ export default function Projects() {
                                                         </p>
                                                     </div>
 
-                                                    {/* Tech Stack */}
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {project.tech.map(
-                                                            (tech) => (
-                                                                <motion.span
-                                                                    key={tech}
-                                                                    whileHover={{
-                                                                        scale: 1.1,
-                                                                    }}
-                                                                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-muted/50 text-muted-foreground"
-                                                                >
-                                                                    {tech}
-                                                                </motion.span>
-                                                            )
-                                                        )}
-                                                    </div>
+                                                    <div className="space-y-2">
+                                                        {/* Tech Stack */}
+                                                        <div className="flex flex-wrap gap-4">
+                                                            {project.tech.map(
+                                                                (tech) => (
+                                                                    <motion.span
+                                                                        key={
+                                                                            tech
+                                                                        }
+                                                                        whileHover={{
+                                                                            scale: 1.1,
+                                                                        }}
+                                                                        className="py-1 rounded-md text-xs font-medium bg-muted/50 text-muted-foreground"
+                                                                    >
+                                                                        {tech}
+                                                                    </motion.span>
+                                                                )
+                                                            )}
+                                                        </div>
 
-                                                    {/* Year and CTA */}
-                                                    <div className="flex items-center justify-between pt-2 border-t border-border">
-                                                        <span className="text-sm text-muted-foreground">
-                                                            {project.year}
-                                                        </span>
-                                                        <motion.button
-                                                            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors group/btn"
-                                                            whileHover={{
-                                                                x: 5,
-                                                            }}
-                                                            transition={{
-                                                                type: 'spring',
-                                                                stiffness: 400,
-                                                                damping: 25,
-                                                            }}
+                                                        {/* Year and CTA */}
+                                                        <Link
+                                                            href={`/projects/${project.id}`}
+                                                            className="flex items-center justify-between pt-2 border-t border-border"
                                                         >
-                                                            Voir le projet
-                                                            <ArrowUpRight className="size-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                                                        </motion.button>
+                                                            <span className="text-sm text-muted-foreground">
+                                                                {project.year}
+                                                            </span>
+                                                            <motion.button
+                                                                className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors group/btn"
+                                                                whileHover={{
+                                                                    x: 5,
+                                                                }}
+                                                                transition={{
+                                                                    type: 'spring',
+                                                                    stiffness: 400,
+                                                                    damping: 25,
+                                                                }}
+                                                            >
+                                                                Voir le projet
+                                                                <ArrowUpRight className="size-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                                                            </motion.button>
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </motion.div>
@@ -283,14 +291,10 @@ export default function Projects() {
                 <section className="border-t border-border py-24">
                     <div className="mx-auto max-w-5xl px-6">
                         <div className="grid gap-8 md:grid-cols-3 text-center">
-                            {[
-                                { value: '25+', label: 'Projets complétés' },
-                                { value: '15+', label: 'Clients satisfaits' },
-                                { value: '3+', label: "Années d'expérience" },
-                            ].map((stat, index) => (
+                            {stats.projects.slice(0, 3).map((stat, index) => (
                                 <motion.div
                                     key={stat.label}
-                                    className="space-y-2"
+                                    className="space-y-3"
                                     initial={{ opacity: 0, scale: 0.5 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     viewport={{ once: true, margin: '-100px' }}
@@ -301,7 +305,7 @@ export default function Projects() {
                                     }}
                                 >
                                     <motion.div
-                                        className="text-4xl md:text-5xl font-bold text-primary"
+                                        className="text-3xl md:text-4xl font-bold text-primary"
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
