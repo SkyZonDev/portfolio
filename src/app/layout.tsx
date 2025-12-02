@@ -4,6 +4,8 @@ import { ThemeProvider } from 'next-themes';
 import { Footer } from '@/components/navigation/footer';
 import { Navbar } from '@/components/navigation/navbar';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Toaster } from 'sonner';
 
 const geistSans = Geist({
@@ -67,6 +69,9 @@ export default function RootLayout({
                         richColors
                     />
                     <Footer />
+
+                    {process.env.NODE_ENV === 'production' && <Analytics />}
+                    {process.env.NODE_ENV === 'production' && <SpeedInsights />}
                 </ThemeProvider>
             </body>
         </html>
