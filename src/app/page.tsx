@@ -15,20 +15,26 @@ import { cn } from '@/lib/utils';
 export default function Home() {
     return (
         <div className="relative min-h-screen bg-background">
-            {/* Subtle grid background */}
+            {/* Subtle grid background - optimisé avec CSS */}
             <div
-                className="fixed inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[64px_64px] opacity-10 mask-[radial-gradient(ellipse_80%_50%_at_50%_0%,var(--foreground)_70%,transparent_110%)]"
+                className="fixed inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[64px_64px] opacity-10"
+                style={{
+                    maskImage:
+                        'radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 110%)',
+                    WebkitMaskImage:
+                        'radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 110%)',
+                }}
                 aria-hidden="true"
             />
 
             <div className="relative">
-                {/* Hero Section */}
+                {/* Hero Section - Above the fold, optimisé pour LCP */}
                 <section
                     className="mx-auto max-w-5xl px-4 sm:px-6 pt-20 sm:pt-32 pb-16 sm:pb-24 md:pt-40 md:pb-32"
                     aria-labelledby="hero-heading"
                 >
                     <div className="space-y-6 sm:space-y-8">
-                        {/* Subtle badge */}
+                        {/* Badge avec animation optimisée */}
                         <div
                             className="inline-flex items-center gap-2 rounded-full border border-border bg-card/50 backdrop-blur-sm px-3 py-1.5 text-xs sm:text-sm text-muted-foreground shadow-sm"
                             role="status"
@@ -43,7 +49,7 @@ export default function Home() {
                             </span>
                         </div>
 
-                        {/* Main heading - clean and bold */}
+                        {/* Main heading - Optimisé avec font-display */}
                         <div className="space-y-3 sm:space-y-4">
                             <h1
                                 id="hero-heading"
@@ -62,14 +68,14 @@ export default function Home() {
                             TypeScript.
                         </p>
 
-                        {/* Minimal CTA */}
+                        {/* CTA optimisé - préconnexion */}
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-4">
                             <Button
                                 asChild
                                 size="lg"
                                 className="rounded-xl w-full sm:w-auto"
                             >
-                                <Link href="/contact">
+                                <Link href="/contact" prefetch={true}>
                                     Discutons de votre projet
                                     <ArrowRight
                                         className="size-4"
@@ -82,7 +88,7 @@ export default function Home() {
                                 asChild
                                 className="w-full sm:w-auto"
                             >
-                                <Link href="/projects">
+                                <Link href="/projects" prefetch={true}>
                                     Voir mes projets
                                     <ArrowUpRight
                                         className="size-4"
@@ -94,7 +100,7 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* Featured Work Section */}
+                {/* Featured Work Section - Lazy loading des images */}
                 <section
                     className="border-t border-border py-16 sm:py-20 md:py-24"
                     aria-labelledby="projects-heading"
@@ -117,13 +123,15 @@ export default function Home() {
                                 .filter((project) => project.featured)
                                 .map((project, idx) => {
                                     const Icon = project.icon;
+                                    const isFirstProject = idx === 0;
+
                                     return (
                                         <article
                                             key={project.id || idx}
-                                            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border/50 bg-linear-to-br from-card to-card/50 backdrop-blur-sm transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:border-border hover:-translate-y-2 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+                                            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border/50 bg-linear-to-br from-card to-card/60 backdrop-blur-sm transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:border-border hover:-translate-y-2 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 content-visibility-auto"
                                         >
                                             <div className="block focus:outline-none">
-                                                {/* Image Background */}
+                                                {/* Image optimisée avec priority pour la première */}
                                                 <div className="relative aspect-video overflow-hidden">
                                                     {project.metadata?.image ? (
                                                         <div className="relative w-full h-full">
@@ -132,126 +140,71 @@ export default function Home() {
                                                                 alt={`Aperçu du projet ${project.title}`}
                                                                 fill
                                                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                                                                priority={
+                                                                    isFirstProject
+                                                                }
+                                                                loading={
+                                                                    isFirstProject
+                                                                        ? 'eager'
+                                                                        : 'lazy'
+                                                                }
                                                             />
                                                         </div>
                                                     ) : (
                                                         <div
                                                             className={cn(
-                                                                'w-full h-full flex items-center justify-center',
-                                                                project.gradient
+                                                                'flex h-full items-center justify-center',
+                                                                project.metadata
+                                                                    ?.gradient ||
+                                                                    'bg-linear-to-br from-primary/20 to-accent/20'
                                                             )}
-                                                            aria-hidden="true"
                                                         >
-                                                            <div
-                                                                className={cn(
-                                                                    'size-16 sm:size-20 rounded-2xl sm:rounded-3xl flex items-center justify-center rotate-3 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110',
-                                                                    project.iconBg
-                                                                )}
-                                                            >
-                                                                <Icon
-                                                                    className="size-8 sm:size-10 text-white"
-                                                                    aria-hidden="true"
-                                                                />
-                                                            </div>
+                                                            {Icon && (
+                                                                <Icon className="size-12 sm:size-16 text-primary/40" />
+                                                            )}
                                                         </div>
                                                     )}
 
-                                                    {/* Gradient Overlay */}
-                                                    <div
-                                                        className="absolute inset-0 bg-linear-to-t from-background via-background/40 to-transparent"
-                                                        aria-hidden="true"
-                                                    />
-
-                                                    {/* Category Badge */}
-                                                    <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                                                        <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold bg-background/90 backdrop-blur-md text-foreground border border-border/50 shadow-lg">
-                                                            {project.category}
-                                                        </span>
-                                                    </div>
-
-                                                    {/* Star Badge - Featured */}
-                                                    <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
-                                                        <div className="p-1.5 sm:p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-lg">
-                                                            <IconStarFilled
-                                                                className="size-3.5 sm:size-4 text-yellow-500"
-                                                                aria-hidden="true"
-                                                            />
+                                                    {/* Status Badge optimisé */}
+                                                    {project.metadata
+                                                        ?.status && (
+                                                        <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                                                            <span
+                                                                className={cn(
+                                                                    'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur-sm',
+                                                                    project
+                                                                        .metadata
+                                                                        .status ===
+                                                                        'active'
+                                                                        ? 'bg-primary/90 text-primary-foreground'
+                                                                        : 'bg-muted/90 text-muted-foreground'
+                                                                )}
+                                                            >
+                                                                {project
+                                                                    .metadata
+                                                                    .status ===
+                                                                    'active' && (
+                                                                    <span className="relative flex size-2">
+                                                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-foreground opacity-75" />
+                                                                        <span className="relative inline-flex size-2 rounded-full bg-primary-foreground" />
+                                                                    </span>
+                                                                )}
+                                                                {project
+                                                                    .metadata
+                                                                    .status ===
+                                                                'active'
+                                                                    ? 'Actif'
+                                                                    : 'Terminé'}
+                                                            </span>
                                                         </div>
-                                                    </div>
-
-                                                    {/* Hover Overlay avec Actions */}
-                                                    <div className="absolute inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center gap-3 sm:gap-4 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
-                                                        {project.metadata
-                                                            ?.url &&
-                                                            typeof project
-                                                                .metadata
-                                                                .url ===
-                                                                'string' && (
-                                                                <Button
-                                                                    size="icon"
-                                                                    className="rounded-full p-4 sm:p-5 transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300"
-                                                                    asChild
-                                                                    aria-label={`Ouvrir ${project.title} dans un nouvel onglet`}
-                                                                >
-                                                                    <Link
-                                                                        href={
-                                                                            project
-                                                                                .metadata
-                                                                                .url
-                                                                        }
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                    >
-                                                                        <ExternalLink
-                                                                            className="size-4 sm:size-5"
-                                                                            aria-hidden="true"
-                                                                        />
-                                                                    </Link>
-                                                                </Button>
-                                                            )}
-                                                        {project.metadata
-                                                            ?.github &&
-                                                            typeof project
-                                                                .metadata
-                                                                .github ===
-                                                                'string' && (
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="outline"
-                                                                    className="rounded-full p-4 sm:p-5 transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300 delay-75"
-                                                                    asChild
-                                                                    aria-label={`Voir le code source de ${project.title} sur GitHub`}
-                                                                >
-                                                                    <Link
-                                                                        href={
-                                                                            project
-                                                                                .metadata
-                                                                                .github
-                                                                        }
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        onClick={(
-                                                                            e
-                                                                        ) =>
-                                                                            e.stopPropagation()
-                                                                        }
-                                                                    >
-                                                                        <IconBrandGithub
-                                                                            className="size-4 sm:size-5"
-                                                                            aria-hidden="true"
-                                                                        />
-                                                                    </Link>
-                                                                </Button>
-                                                            )}
-                                                    </div>
+                                                    )}
                                                 </div>
 
-                                                {/* Content Area */}
-                                                <div className="flex flex-col justify-between p-4 sm:p-6 space-y-3 sm:space-y-4">
-                                                    {/* Title & Description */}
-                                                    <div className="space-y-1.5 sm:space-y-2">
-                                                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-card-foreground group-hover:text-primary transition-colors duration-300">
+                                                {/* Content Section */}
+                                                <div className="p-5 sm:p-6 space-y-4">
+                                                    <div className="space-y-2">
+                                                        <h3 className="text-lg sm:text-xl font-semibold text-card-foreground group-hover:text-primary transition-colors">
                                                             {project.title}
                                                         </h3>
                                                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
@@ -261,38 +214,72 @@ export default function Home() {
                                                         </p>
                                                     </div>
 
-                                                    <div className="space-y-3 sm:space-y-4">
-                                                        {/* Tech Stack Pills */}
-                                                        <div
-                                                            className="flex flex-wrap gap-1.5 sm:gap-2"
-                                                            role="list"
-                                                            aria-label="Technologies utilisées"
-                                                        >
-                                                            {project.tech.map(
-                                                                (
-                                                                    techItem,
-                                                                    i
-                                                                ) => (
-                                                                    <span
-                                                                        key={
-                                                                            techItem
-                                                                        }
-                                                                        role="listitem"
-                                                                        className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg text-xs font-medium bg-muted/80 text-muted-foreground border border-border/50"
-                                                                    >
-                                                                        {
-                                                                            techItem
-                                                                        }
-                                                                    </span>
-                                                                )
+                                                    {/* Tags optimisés */}
+                                                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                                        {project.tech
+                                                            ?.slice(0, 3)
+                                                            .map((tech) => (
+                                                                <span
+                                                                    key={tech}
+                                                                    className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground"
+                                                                >
+                                                                    {tech}
+                                                                </span>
+                                                            ))}
+                                                        {project.tech &&
+                                                            project.tech
+                                                                .length > 3 && (
+                                                                <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+                                                                    +
+                                                                    {project
+                                                                        .tech
+                                                                        .length -
+                                                                        3}
+                                                                </span>
+                                                            )}
+                                                    </div>
+
+                                                    {/* Links Section - Simplifié */}
+                                                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                                                        <div className="flex items-center gap-2">
+                                                            {project.metadata
+                                                                ?.github && (
+                                                                <a
+                                                                    href={
+                                                                        project
+                                                                            .metadata
+                                                                            .github as string
+                                                                    }
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md p-1"
+                                                                    aria-label={`Voir le code source de ${project.title} sur GitHub`}
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        e.stopPropagation()
+                                                                    }
+                                                                >
+                                                                    <IconBrandGithub className="size-4" />
+                                                                </a>
+                                                            )}
+                                                            {project.metadata
+                                                                ?.stars && (
+                                                                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                                                                    <IconStarFilled className="size-3 text-primary" />
+                                                                    {
+                                                                        project
+                                                                            .metadata
+                                                                            .stars
+                                                                    }
+                                                                </span>
                                                             )}
                                                         </div>
 
-                                                        {/* Footer avec Year et CTA */}
                                                         <Link
                                                             href={`/projects/${project.id}`}
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center justify-between pt-3 sm:pt-4 border-t border-border/50"
+                                                            className="flex items-center justify-between text-xs sm:text-sm hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md p-1"
+                                                            prefetch={false}
                                                         >
                                                             <time
                                                                 className="text-xs sm:text-sm font-medium text-muted-foreground"
@@ -300,7 +287,7 @@ export default function Home() {
                                                             >
                                                                 {project.year}
                                                             </time>
-                                                            <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-primary transition-all duration-300 group-hover:gap-2 sm:group-hover:gap-3">
+                                                            <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-primary transition-all duration-300 group-hover:gap-2 sm:group-hover:gap-3 ml-3">
                                                                 Découvrir
                                                                 <ArrowUpRight
                                                                     className="size-3.5 sm:size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -320,6 +307,7 @@ export default function Home() {
                             <Link
                                 href="/projects"
                                 className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2 py-1"
+                                prefetch={false}
                             >
                                 Voir tous les projets
                                 <ArrowRight
@@ -331,9 +319,9 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* Services Section - Clean list */}
+                {/* Services Section - Optimisé */}
                 <section
-                    className="border-t border-border py-16 sm:py-20 md:py-24"
+                    className="border-t border-border py-16 sm:py-20 md:py-24 content-visibility-auto"
                     aria-labelledby="expertise-heading"
                 >
                     <div className="mx-auto max-w-5xl px-4 sm:px-6">
@@ -349,7 +337,7 @@ export default function Home() {
                             </p>
                         </div>
 
-                        <div className="grid gap-px bg-border sm:grid-cols-2 md:grid-cols-3 rounded-xl sm:rounded-2xl overflow-hidden">
+                        <div className="grid gap-px bg-border sm:grid-cols-2 md:grid-cols-3 rounded-xl sm:rounded-3xl overflow-hidden">
                             <article className="bg-card p-6 sm:p-8 space-y-3">
                                 <div
                                     className="size-10 rounded-full bg-muted flex items-center justify-center"
@@ -401,9 +389,9 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* CTA Section - Ultra minimal */}
+                {/* CTA Section - Optimisé pour conversion */}
                 <section
-                    className="border-t border-border py-20 sm:py-24 md:py-32"
+                    className="border-t border-border py-20 sm:py-24 md:py-32 content-visibility-auto"
                     aria-labelledby="cta-heading"
                 >
                     <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center space-y-6 sm:space-y-8">
@@ -421,6 +409,7 @@ export default function Home() {
                         <Link
                             href="/contact"
                             className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-medium text-primary-foreground transition-all hover:opacity-90 hover:gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            prefetch={true}
                         >
                             Démarrer la conversation
                             <ArrowRight

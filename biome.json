@@ -20,7 +20,8 @@
             "!**/build",
             "!**/dist",
             "!**/coverage",
-            "!**/.pnpm-store"
+            "!**/.pnpm-store",
+            "!next-env.d.ts"
         ]
     },
     "linter": {
