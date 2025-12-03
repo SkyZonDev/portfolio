@@ -71,7 +71,7 @@ export function ProjectCard({ index = 0, project }: ProjectCardProps) {
                 )}
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-linear-to-t from-background via-background/40 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t dark:from-background dark:via-background/40 dark:to-transparent" />
 
                 {/* Category Badge */}
                 <motion.div
