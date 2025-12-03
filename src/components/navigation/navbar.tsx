@@ -1,8 +1,7 @@
 'use client';
 
-import { Menu, Moon, Sparkles, Sun, X } from 'lucide-react';
+import { Menu, Sparkles, X } from 'lucide-react';
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { Button } from '@/components/ui/button';
@@ -16,14 +15,8 @@ import { navbar } from '@/constants';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
-    const [mounted, setMounted] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { theme, setTheme } = useTheme();
     const [isScrolled, setIsScrolled] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -32,10 +25,6 @@ export function Navbar() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    const toggleTheme = () => {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
-    };
 
     return (
         <nav
@@ -83,29 +72,12 @@ export function Navbar() {
                         </NavigationMenuList>
                     </NavigationMenu>
 
-                    {/* Actions */}
-                    <div className="flex items-center gap-2">
-                        <ThemeToggle />
-                        <Button size="sm" asChild>
-                            <Link href="/">Me soutenir</Link>
-                        </Button>
-                    </div>
+                    <ThemeToggle />
                 </div>
 
                 {/* Mobile Menu Button */}
                 <div className="flex items-center gap-2 md:hidden">
-                    {mounted && (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={toggleTheme}
-                            aria-label="Toggle theme"
-                        >
-                            <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                            <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span className="sr-only">Toggle theme</span>
-                        </Button>
-                    )}
+                    <ThemeToggle />
                     <Button
                         variant="ghost"
                         size="icon"
@@ -123,7 +95,7 @@ export function Navbar() {
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="border-t bg-background md:hidden">
+                <div className="border-t bg-transparent backdrop-blur supports-backdrop-filter:bg-transparent md:hidden">
                     <div className="container mx-auto max-w-7xl px-4 py-4">
                         <nav className="flex flex-col gap-2">
                             <Link
@@ -154,15 +126,6 @@ export function Navbar() {
                             >
                                 Contact
                             </Link>
-                            <div className="pt-2">
-                                <Button
-                                    className="w-full"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    asChild
-                                >
-                                    <Link href="/contact">Me soutenir</Link>
-                                </Button>
-                            </div>
                         </nav>
                     </div>
                 </div>

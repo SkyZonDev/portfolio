@@ -149,7 +149,6 @@ export default function Home() {
                                                                         ? 'eager'
                                                                         : 'lazy'
                                                                 }
-                                                                quality={85}
                                                             />
                                                         </div>
                                                     ) : (
