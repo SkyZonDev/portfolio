@@ -39,6 +39,7 @@ export function Navbar() {
                 <Link
                     href="/"
                     className="flex items-center gap-2 font-semibold transition-opacity hover:opacity-80"
+                    aria-label="Accéder à la page d'accueil"
                 >
                     <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
                         <Sparkles className="size-4 text-primary" />
