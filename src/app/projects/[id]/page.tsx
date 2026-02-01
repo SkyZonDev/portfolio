@@ -1,6 +1,6 @@
 'use client';
 
-import { IconBrandGithub } from '@tabler/icons-react';
+import { IconBrandGithub, IconFile } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import {
     ArrowLeft,
@@ -287,7 +287,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                                 </div>
 
                                 {(project.metadata?.url ||
-                                    project.metadata?.github) && (
+                                    project.metadata?.github ||
+                                    project.metadata?.documentation) && (
                                     <div className="pt-4 border-t border-border space-y-3">
                                         {project.metadata.url && (
                                             <Button
@@ -323,6 +324,25 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                                                 >
                                                     <IconBrandGithub className="size-4 mr-2" />
                                                     Voir le code
+                                                </Link>
+                                            </Button>
+                                        )}
+                                        {project.metadata.documentation && (
+                                            <Button
+                                                variant="outline"
+                                                asChild
+                                                className="w-full rounded-full"
+                                            >
+                                                <Link
+                                                    href={
+                                                        project.metadata
+                                                            .documentation as string
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <IconFile className="size-4 mr-2" />
+                                                    Documentation
                                                 </Link>
                                             </Button>
                                         )}

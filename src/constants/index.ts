@@ -75,7 +75,7 @@ export const projects: Project[] = [
         iconBg: 'bg-blue-500',
         featured: true,
         metadata: {
-            url: 'https://scolario-web.vercel.app',
+            url: 'https://scolario.app',
             image: '1.webp',
         },
     },
@@ -106,6 +106,31 @@ export const projects: Project[] = [
     },
     {
         id: 3,
+        title: 'AIS Forge',
+        description:
+            'Cœur d’authentification auto-hébergé, orienté API et sécurité. Délivrance de tokens JWT, rotation automatique des clés, audit des accès et gestion d’identités, conçu pour les backends, microservices et plateformes internes sans dépendance tierce.',
+        category: 'Backend',
+        year: '2025',
+        tech: [
+            'TypeScript',
+            'Fastify',
+            'PostgreSQL',
+            'Drizzle ORM',
+            'JWT',
+            'Cryptographie asymétrique',
+            'GitHub Actions',
+        ],
+        icon: Layers,
+        gradient: 'from-orange-500/10 to-red-500/10',
+        iconBg: 'bg-red-600',
+        featured: true,
+        metadata: {
+            github: `${process.env.NEXT_PUBLIC_GITHUB_URL}/ais-forge`,
+            // image: '3.webp',
+        },
+    },
+    {
+        id: 4,
         title: 'StudX',
         description:
             'Application permettant de récupérer et centraliser les informations étudiantes de MyDigitalCampus grâce à un système de parsing HTML, en l’absence d’API officielle. Elle extrayait automatiquement notes, absences, retards et emploi du temps depuis les pages renvoyées par la plateforme.',
@@ -123,7 +148,7 @@ export const projects: Project[] = [
         },
     },
     {
-        id: 4,
+        id: 5,
         title: 'Chichi Pizza',
         description:
             'Site vitrine pour une pizzeria, présentant l’activité, les menus, les valeurs de l’établissement et les informations pratiques, le tout avec une interface claire et responsive.',
@@ -141,7 +166,7 @@ export const projects: Project[] = [
         },
     },
     {
-        id: 5,
+        id: 6,
         title: 'Authentification API REST',
         description:
             'API REST modulaire permettant l’authentification et la gestion des utilisateurs avec prise en charge de plusieurs bases de données.',

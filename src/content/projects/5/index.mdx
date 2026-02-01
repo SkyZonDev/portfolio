@@ -1,269 +1,57 @@
 ## Contexte & Objectifs
 
-Ce projet est né d'un besoin de créer une solution d'authentification flexible et réutilisable, capable de s'adapter à différents environnements et bases de données. L'objectif était de développer une API REST modulaire qui démontre mes compétences en développement backend et en sécurité des APIs.
+Chichi Pizza est une pizzeria cherchant à moderniser sa présence en ligne. L'objectif était de créer un site vitrine simple, élégant et efficace qui mettrait en valeur leurs produits et faciliterait le contact avec les clients.
 
-### Problématique initiale
+### Besoins spécifiques
 
-Les projets nécessitent souvent des systèmes d'authentification, mais chaque projet peut avoir des contraintes différentes :
-
-- **Bases de données variées** : PostgreSQL pour les projets relationnels, MongoDB pour les projets NoSQL, MySQL pour la compatibilité
-- **Besoin de flexibilité** : Pouvoir changer de base de données sans réécrire tout le code
-- **Sécurité robuste** : Implémenter les meilleures pratiques de sécurité API
-- **Réutilisabilité** : Créer une solution modulaire utilisable dans plusieurs projets
-
-### Objectifs du projet
-
-- **Architecture modulaire** : Support de PostgreSQL, MongoDB et MySQL via une interface unifiée
-- **Configuration flexible** : Choix de la base de données par opération via configuration
-- **Sécurité renforcée** : Implémentation des standards de sécurité API (JWT, validation, protection XSS)
-- **Extensibilité** : Architecture permettant d'ajouter facilement de nouvelles bases de données
-- **Démonstration de compétences** : Mise en valeur des compétences backend et sécurité
+- Site vitrine **moderne et appétissant**
+- Présentation du **menu** avec photos
+- Informations pratiques (horaires, localisation)
+- Design **responsive** et rapide à charger
 
 ## Solution & Approche
 
-### Architecture modulaire
+### Stack technique simple et efficace
 
-L'API repose sur une architecture en couches permettant de changer de base de données sans modifier la logique métier :
+Pour ce projet, j'ai opté pour une stack légère mais performante :
 
-```
-┌─────────────────────────────────────┐
-│         API REST Layer              │
-│  (Routes, Controllers, Middleware)  │
-└─────────────────────────────────────┘
-              │
-┌─────────────────────────────────────┐
-│      Business Logic Layer           │
-│  (Services, Authentication Logic)   │
-└─────────────────────────────────────┘
-              │
-┌─────────────────────────────────────┐
-│      Data Access Layer              │
-│  (Repository Pattern)               │
-└─────────────────────────────────────┘
-              │
-┌─────────────────────────────────────┐
-│   Database Adapters                 │
-│  PostgreSQL │ MongoDB │ MySQL       │
-└─────────────────────────────────────┘
-```
-
-### Patterns de conception
-
-L'architecture utilise plusieurs patterns de conception pour garantir la modularité :
-
-- **Factory Pattern** : `DatabaseFactory` pour créer dynamiquement les connexions selon le type de base de données
-- **Repository Pattern** : `UserRepository` pour abstraire l'accès aux données et découpler la logique métier
-- **Configuration par opération** : Choix de la base de données via `db.config.js` pour chaque type d'opération (login, register, etc.)
-
-Cette approche permet de :
-
-- **Changer de base de données** sans modifier le code métier
-- **Utiliser différentes bases** pour différentes opérations si nécessaire
-- **Ajouter facilement** de nouvelles bases de données
+- **React + Vite** : Développement rapide et build optimisé
+- **Tailwind CSS** : Styling rapide et cohérent
+- **Hébergement statique** : Performances maximales et coûts minimaux
 
 ### Fonctionnalités principales
 
-#### 🔐 Authentification
+#### Présentation des menus
 
-- **Inscription** : Création de compte avec validation des données (email, username, password)
-- **Connexion** : Authentification sécurisée avec génération de tokens JWT
-- **Validation complète** : Vérification du format email, longueur des mots de passe et usernames
+- Galerie de photos professionnelles des pizzas
+- Organisation par catégories
+- Prix clairement affichés
+- Descriptions alléchantes
 
-#### 🔒 Sécurité
+#### Informations pratiques
 
-- **Hachage des mots de passe** : Utilisation de `bcryptjs` avec salt rounds configurables
-- **Tokens JWT** : Génération de tokens sécurisés avec expiration (24h)
-- **Protection XSS** : Sanitization automatique des entrées utilisateur
-- **Helmet** : Sécurisation des headers HTTP
-- **CORS configuré** : Contrôle des origines autorisées
-- **Validation stricte** : Validation côté serveur de toutes les données d'entrée
-
-## Stack technique
-
-### Backend Core
-
-- **Node.js + Express** : Framework web performant et flexible
-- **JavaScript (CommonJS)** : Code modulaire et maintenable
-
-### Bases de données supportées
-
-- **PostgreSQL** : Via `pg` (driver natif) avec connection pooling
-- **MongoDB** : Via `mongoose` pour la flexibilité NoSQL
-- **MySQL** : Via `mysql2` avec support des promesses
-
-### Sécurité & Authentification
-
-- **jsonwebtoken** : Génération et vérification des tokens JWT
-- **bcryptjs** : Hachage sécurisé des mots de passe avec salt configurable
-- **helmet** : Sécurisation des headers HTTP
-- **express-validator** : Bibliothèque de validation (installée)
-- **Validation custom** : Middleware de validation personnalisé pour email, password, username
-- **Protection XSS** : Sanitization automatique des entrées dans le middleware Express
-
-### Configuration
-
-- **dotenv** : Gestion des variables d'environnement
-- **Configuration flexible** : Activation/désactivation des bases de données via variables d'environnement
-- **db.config.js** : Configuration centralisée pour choisir la base de données par opération
-
-## Défis techniques
-
-### Abstraction multi-base de données
-
-Le principal défi était de créer une abstraction permettant de supporter plusieurs bases de données sans dupliquer la logique métier :
-
-**Solutions implémentées :**
-
-- **DatabaseFactory** : Pattern Factory pour créer dynamiquement les connexions (MongoDB, PostgreSQL, MySQL)
-- **Repository Pattern** : `UserRepository` avec méthodes unifiées (`create`, `findByEmail`) qui s'adaptent automatiquement
-- **Configuration par opération** : Choix de la base de données via `db.config.js` (ex: utiliser PostgreSQL pour login/register)
-- **Switches conditionnels** : Implémentation spécifique pour chaque base de données dans le repository
-- **Connection pooling** : Utilisation native des pools pour PostgreSQL et MySQL
-
-### Sécurité de l'authentification
-
-Implémentation des meilleures pratiques de sécurité :
-
-- **Tokens JWT sécurisés** : Signature avec secret fort (via variable d'environnement), expiration de 24h
-- **Hachage robuste** : `bcryptjs` avec salt rounds configurables via `JWT_SALT`
-- **Validation stricte** : Middleware de validation custom pour email (regex), password (min 6 caractères), username (min 3 caractères)
-- **Protection XSS** : Sanitization automatique des entrées (remplacement de `<` et `>`)
-- **Helmet** : Sécurisation des headers HTTP pour prévenir les attaques courantes
-
-### Gestion des connexions multiples
-
-- **Connexions simultanées** : Possibilité d'activer plusieurs bases de données en même temps
-- **Sélection dynamique** : Choix de la base de données appropriée selon l'opération demandée
-- **Gestion d'erreurs** : Gestion robuste des erreurs de connexion pour chaque base de données
-
-## Fonctionnalités détaillées
-
-### Endpoints d'authentification
-
-```
-POST   /v1/auth/register  - Inscription d'un nouvel utilisateur
-POST   /v1/auth/login     - Connexion et obtention d'un token JWT
-GET    /                  - Statut de l'API et bases de données actives
-```
-
-### Structure des requêtes
-
-**Inscription (`/v1/auth/register`)** :
-
-```json
-{
-  "username": "exemple",
-  "email": "exemple@email.com",
-  "password": "motdepasse"
-}
-```
-
-**Connexion (`/v1/auth/login`)** :
-
-```json
-{
-  "email": "exemple@email.com",
-  "password": "motdepasse"
-}
-```
-
-**Réponse** (pour les deux endpoints) :
-
-```json
-{
-  "message": "Utilisateur créé avec succès" / "Connexion réussie",
-  "token": "jwt_token",
-  "user": {
-    "id": "userId",
-    "email": "userEmail",
-    "username": "username"
-  }
-}
-```
-
-### Middleware de sécurité
-
-- **Validation middleware** : `validateRegistration` et `validateLogin` pour vérifier les données d'entrée
-- **Sanitization XSS** : Middleware global pour protéger contre les injections XSS
-- **Helmet** : Protection des headers HTTP
-- **CORS** : Configuration des origines autorisées
+- Carte interactive avec localisation
+- Horaires d'ouverture
+- Numéros de téléphone cliquables
+- Liens vers les réseaux sociaux
 
 ## Résultats & Impact
 
-### Fonctionnalités livrées
+### Performance
 
-- ✅ **Support multi-base de données** : PostgreSQL, MongoDB et MySQL opérationnels
-- ✅ **API REST fonctionnelle** : Endpoints d'inscription et de connexion opérationnels
-- ✅ **Sécurité renforcée** : Implémentation des meilleures pratiques (JWT, bcrypt, validation, XSS protection)
-- ✅ **Architecture modulaire** : Facilement extensible et maintenable avec Factory et Repository patterns
-- ✅ **Configuration flexible** : Choix de la base de données par opération via configuration
-- ✅ **Documentation** : README complet avec exemples d'utilisation
+- ⚡ Site ultra-rapide grâce au build Vite
+- 📱 Parfaitement responsive
+- 🎨 Design moderne et appétissant
 
-### Démonstration de compétences
+### Impact business
 
-Ce projet met en valeur :
-
-- **Architecture logicielle** : Conception d'une architecture modulaire et extensible
-- **Sécurité API** : Maîtrise des standards de sécurité (JWT, bcrypt, validation, protection XSS)
-- **Multi-database** : Capacité à travailler avec différents types de bases de données (relationnelles et NoSQL)
-- **Patterns de design** : Utilisation appropriée de Repository et Factory patterns
-- **Abstraction** : Création d'une couche d'abstraction efficace pour gérer plusieurs bases de données
-
-### Impact technique
-
-- **Réutilisabilité** : Base solide pour intégrer l'authentification dans d'autres projets
-- **Flexibilité** : Changement de base de données sans impact sur le code métier grâce au Repository pattern
-- **Maintenabilité** : Code structuré en couches (routes, controllers, repositories, models)
-- **Sécurité** : Implémentation robuste des mécanismes de sécurité (hachage, JWT, validation, sanitization)
+Le site a permis :
+- Meilleure **visibilité en ligne**
+- Augmentation des **appels téléphoniques**
+- Image de marque **modernisée**
 
 ## Ce que j'ai appris
 
-### Compétences techniques
-
-- **Architecture modulaire** : Conception de systèmes extensibles et maintenables avec séparation des responsabilités
-- **Pattern Repository** : Abstraction efficace de l'accès aux données pour supporter plusieurs bases de données
-- **Factory Pattern** : Création dynamique d'objets (connexions DB) selon la configuration
-- **Sécurité API** : Implémentation des mécanismes de sécurité (JWT, bcrypt, validation, protection XSS)
-- **Multi-database** : Gestion de différentes bases de données (PostgreSQL, MongoDB, MySQL) avec une interface unifiée
-- **Drivers natifs** : Utilisation de drivers natifs (`pg`, `mysql2`, `mongoose`) pour optimiser les performances
-
-### Compétences transversales
-
-- **Design patterns** : Application appropriée des patterns de conception (Factory, Repository)
-- **Configuration flexible** : Création d'un système de configuration permettant de choisir la base de données par opération
-- **Documentation** : Création d'une documentation claire avec exemples d'utilisation
-- **Sécurité** : Compréhension approfondie des enjeux de sécurité API et implémentation de protections
-
-## Évolutions futures
-
-### Améliorations d'authentification
-
-- **Refresh tokens** : Implémentation d'un système de refresh tokens pour améliorer la sécurité
-- **Déconnexion** : Endpoint de déconnexion avec invalidation des tokens
-- **Récupération de mot de passe** : Système de reset de mot de passe via email
-- **2FA / MFA** : Authentification à deux facteurs (SMS, TOTP)
-- **OAuth2 / OIDC** : Support de l'authentification OAuth2 et OpenID Connect
-- **Social login** : Connexion via Google, GitHub, etc.
-
-### Extensions fonctionnelles
-
-- **Gestion des utilisateurs** : CRUD complet pour les utilisateurs (GET, PUT, DELETE)
-- **Gestion des rôles** : Système de rôles et permissions avancé (RBAC)
-- **Profil utilisateur** : Endpoints pour gérer les informations personnelles
-- **Changement de mot de passe** : Endpoint dédié pour la mise à jour du mot de passe
-- **Sessions multiples** : Gestion de plusieurs sessions par utilisateur
-
-### Améliorations techniques
-
-- **Rate limiting** : Protection contre les attaques par force brute avec `express-rate-limit`
-- **Tests** : Ajout de tests unitaires et d'intégration (Jest, Supertest)
-- **Documentation API** : Intégration de Swagger/OpenAPI pour une documentation interactive
-- **Validation avancée** : Utilisation complète d'`express-validator` pour une validation plus robuste
-- **Logging structuré** : Système de logs centralisé et structuré pour le debugging
-
-### Optimisations
-
-- **Cache Redis** : Mise en cache des tokens et sessions pour améliorer les performances
-- **Connection pooling avancé** : Optimisation des pools de connexions
-- **Indexation** : Ajout d'index sur les champs fréquemment interrogés (email, username)
-- **Monitoring** : Intégration avec des outils de monitoring (Prometheus, Grafana)
+- **Vite** : Maîtrise du bundler moderne ultra-rapide
+- **Design simple** : Parfois moins c'est plus
+- **Performance** : Importance de l'optimisation des images dans la restauration
