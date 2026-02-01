@@ -1,178 +1,104 @@
-## Contexte & Objectifs
+### Le Problème
 
-StudX est une application développée pour résoudre un problème concret rencontré par les étudiants : l'absence d'API officielle pour accéder aux données de MyDigitalCampus. Face à cette limitation, j'ai créé une solution innovante permettant de récupérer et centraliser automatiquement toutes les informations étudiantes.
+Les solutions d'authentification actuelles nous forcent à choisir entre :
 
-### Problématique initiale
+- **Services tiers** (Auth0, Firebase, Cognito) avec leurs dépendances externes et leur verrouillage
+- **Protocoles complexes** (OAuth 2.0, OIDC) surdimensionnés pour de simples besoins backend
 
-MyDigitalCampus, plateforme de gestion scolaire, ne fournit pas d'API publique pour accéder aux données étudiantes. Les étudiants devaient :
+### La Solution
 
-- Se connecter manuellement à chaque fois pour consulter leurs notes
-- Naviguer entre plusieurs pages pour récupérer leurs informations
-- Ne pas avoir de vue d'ensemble centralisée de leur parcours
-- Perdre du temps à chercher des informations dispersées
+AIS Forge adopte une approche différente : un serveur headless, auto-hébergé, qui implémente uniquement ce dont vous avez vraiment besoin.
 
-### Objectifs du projet
+## Caractéristiques Principales
 
-- **Automatiser la récupération** des données depuis MyDigitalCampus
-- **Centraliser** toutes les informations étudiantes en un seul endroit
-- **Extraire automatiquement** : notes, absences, retards et emploi du temps
-- **Créer une interface** intuitive et moderne pour visualiser ces données
-- **Résoudre l'absence d'API** grâce à un système de parsing HTML robuste
+### Sécurité Sans Compromis
 
-## Solution & Approche
+- Tokens JWT avec signature asymétrique
+- Rotation automatique des clés cryptographiques
+- Tokens de rafraîchissement opaques avec rotation stricte
+- Aucun secret stocké en clair
+- Journalisation complète des audits
 
-### Architecture technique
+### Architecture Moderne
 
-L'application repose sur une architecture permettant de simuler les interactions utilisateur avec la plateforme MyDigitalCampus :
+Construit avec les meilleures technologies pour la performance et la fiabilité :
 
-- **Système de parsing HTML** : Extraction des données depuis les pages HTML renvoyées
-- **Authentification automatisée** : Gestion des sessions et cookies
-- **Scraping intelligent** : Navigation automatique entre les différentes pages
-- **Stockage local** : Sauvegarde des données pour consultation hors ligne
+- **Fastify** : Framework Node.js haute performance
+- **PostgreSQL** : Base de données robuste et éprouvée
+- **Drizzle ORM** : Type-safety de bout en bout
+- **TypeScript** : Sécurité au niveau du code
 
-### Fonctionnalités principales
+### API Simple et Puissante
 
-#### 📊 Extraction automatique des notes
+```typescript
+// Authentification en 3 lignes
+const { access_token, refresh_token } = await fetch('/api/v1/auth/sign-in', {
+  method: 'POST',
+  body: JSON.stringify({ email, password })
+}).then(r => r.json());
 
-- Récupération de toutes les notes par matière
-- Calcul automatique des moyennes
-- Historique complet des évaluations
-- Visualisation graphique de l'évolution
+// Utilisation immédiate
+fetch('/api/resource') // Via les cookies
 
-#### 📅 Gestion de l'emploi du temps
+fetch('/api/resource', {
+  headers: { 'Authorization': `Bearer ${access_token}` }
+}); // Via un bearer token
+```
 
-- Extraction automatique de l'emploi du temps hebdomadaire
-- Affichage par jour et par créneau
-- Détection des modifications et changements
+## Cas d'Usage Idéaux
 
-#### ⚠️ Suivi des absences et retards
+Ce projet est parfait pour :
 
-- Liste complète des absences justifiées et non justifiées
-- Compteur de retards
+- Plateformes internes d'entreprise
+- Backends SaaS auto-hébergés
+- Architectures microservices
+- Applications nécessitant une authentification centralisée
+- Environnements où la conformité impose l'auto-hébergement
 
-#### 🔄 Synchronisation automatique
+## Architecture Technique
 
-- Mise à jour périodique des données
-- Détection des nouvelles informations
-- Notifications en cas de nouvelles notes ou absences
-- Mode hors ligne avec données en cache
+```
+Backend App → AIS Forge Auth Server → PostgreSQL
+              ├─ Gestion des identités
+              ├─ Émission de tokens JWT
+              ├─ Rotation automatique des clés
+              └─ Endpoint JWKS public
+```
 
-## Défis techniques
+Le serveur expose une API REST simple, sans interface utilisateur, conçue pour être interrogée par vos applications backend.
 
-### Parsing HTML robuste
+## Philosophie du Projet
 
-Le principal défi était de créer un système de parsing fiable face à :
+**Pas de bloat, que l'essentiel**
 
-- **Structure HTML variable** : La plateforme pouvait modifier sa structure
-- **Sélecteurs CSS fragiles** : Nécessité de trouver des sélecteurs stables
-- **Données dynamiques** : Certaines informations chargées via JavaScript
-- **Gestion des erreurs** : Robustesse face aux changements de structure
+AIS Forge refuse la complexité inutile. Pas de redirections navigateur, pas de protocoles sur-ingéniérisés. Juste une authentification solide, moderne et contrôlable.
 
-**Solutions implémentées :**
+**Sécurité par conception**
 
-- Utilisation de sélecteurs CSS multiples pour plus de résilience
-- Parsing avec plusieurs stratégies de fallback
-- Validation des données extraites avant stockage
-- Système de logs pour détecter les changements de structure
+Chaque décision technique priorise la sécurité : cryptographie asymétrique, tokens à courte durée de vie, rotation obligatoire, audit complet.
 
-### Gestion de l'authentification
+**Votre infrastructure, vos règles**
 
-- **Sessions persistantes** : Maintien de la session entre les requêtes
-- **Gestion des cookies** : Conservation des tokens d'authentification
-- **Détection de déconnexion** : Reconnexion automatique si nécessaire
-- **Sécurité** : Stockage sécurisé des identifiants
+Auto-hébergé signifie contrôle total : pas de quotas, pas de tarification surprise, pas de changements d'API imposés par un tiers.
 
-### Performance et fiabilité
+## État d'Avancement
 
-- **Requêtes optimisées** : Minimisation du nombre de requêtes HTTP
-- **Cache intelligent** : Éviter les requêtes inutiles
-- **Gestion des timeouts** : Retry automatique en cas d'échec
-- **Rate limiting** : Respect des limites de la plateforme
+Le projet est actuellement en **développement actif** (version alpha). L'API core et le système de tokens sont en cours d'implémentation.
 
-## Stack technique
+### Prochaines Étapes
 
-### Technologies de scraping
+- Finalisation de l'API d'authentification
+- Système de rotation des clés JWKS
+- Support multi-facteurs (TOTP)
+- API d'administration
+- Documentation complète
+- Images Docker officielles
 
-- **Puppeteer** : Parsing HTML côté serveur
-- **Axios** : Requêtes HTTP avec gestion des sessions
+## Technologies Utilisées
 
-### Frontend
-
-- **React** : Interface utilisateur moderne et réactive
-- **TypeScript** : Typage strict pour éviter les erreurs
-- **Nativewind CSS** : Styling rapide et cohérent
-
-### Stockage des données
-
-- **LocalStorage / AsyncStorage** : Stockage côté client
-- **Synchronisation** : Mise à jour incrémentale
-
-## Résultats & Impact
-
-### Fonctionnalités livrées
-
-- ✅ **Extraction automatique** de toutes les données étudiantes
-- ✅ **Interface moderne** et intuitive pour visualiser les informations
-- ✅ **Synchronisation automatique** avec MyDigitalCampus
-- ✅ **Mode hors ligne** avec données en cache
-- ✅ **Notifications** pour les nouvelles informations
-
-### Impact utilisateur
-
-- **Gain de temps** : Plus besoin de naviguer manuellement sur la plateforme
-- **Vue centralisée** : Toutes les informations au même endroit
-- **Suivi facilité** : Meilleure compréhension de sa situation académique
-- **Accessibilité** : Consultation des données même hors ligne
-
-### Apprentissages techniques
-
-- **Web scraping avancé** : Techniques de parsing HTML robustes
-- **Gestion de sessions** : Authentification et maintien de sessions
-- **Résilience** : Gestion des erreurs et adaptation aux changements
-- **Architecture** : Conception d'un système de scraping maintenable
-
-## Défis rencontrés
-
-### Évolutivité de la plateforme
-
-Le principal défi était l'instabilité potentielle de la solution face aux mises à jour de MyDigitalCampus :
-
-- **Changements de structure** : La plateforme pouvait modifier son HTML
-- **Détection proactive** : Système d'alertes en cas d'échec de parsing
-- **Maintenance** : Nécessité de mettre à jour les sélecteurs régulièrement
-
-### Limitations techniques
-
-- **Absence d'API** : Contrainte imposée par la plateforme
-- **Rate limiting** : Respect des limites pour éviter le blocage
-- **Données dynamiques** : Certaines informations nécessitent JavaScript
-
-## Ce que j'ai appris
-
-### Compétences techniques
-
-- **Web scraping** : Maîtrise des techniques de parsing HTML
-- **Gestion de sessions** : Authentification automatisée et cookies
-- **Robustesse** : Création de systèmes résilients face aux changements
-- **Architecture** : Design de solutions maintenables
-
-### Compétences transversales
-
-- **Résolution de problèmes** : Trouver des solutions créatives en l'absence d'API
-- **Persévérance** : Gérer les défis techniques complexes
-- **Empathie utilisateur** : Comprendre les besoins réels des étudiants
-
-## Évolutions futures
-
-### Améliorations possibles
-
-- **API proxy** : Création d'une API intermédiaire pour d'autres applications
-- **Application mobile** : Version native iOS/Android
-- **Notifications push** : Alertes en temps réel pour nouvelles notes
-- **Analytics** : Statistiques détaillées sur la progression
-- **Export de données** : Génération de rapports PDF
-
-### Maintenance
-
-- **Monitoring** : Surveillance automatique des changements de structure
-- **Mise à jour automatique** : Adaptation aux modifications de MyDigitalCampus
+- **Runtime** : Node.js 20+
+- **Framework** : Fastify 5.x
+- **Base de données** : PostgreSQL 17+
+- **ORM** : Drizzle
+- **Langage** : TypeScript 5+
+- **Cryptographie** : jose (JWT), argon2 (hashing)

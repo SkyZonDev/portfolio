@@ -26,7 +26,7 @@ const aboutConfig = {
         description: [
             "Salut ! Je suis actuellement étudiant en deuxième année de prépa en école d'ingénieurs (ESME) et développeur freelance. Je jongle entre mes études et ma passion pour la programmation, en créant des solutions modernes et performantes pour mes clients.",
             "Spécialisé dans le développement d'applications web avec React et Next.js, je m'occupe aussi bien du frontend que du backend. Mon expérience inclut la création de site statique, site e-commerce, modules FiveM, la gestion de bases de données, ainsi que l'optimisation SEO. J'aime transformer des idées en projets concrets et fonctionnels.",
-            "Au-delà du code, j'ai été jeune sapeur-pompier et maintenant pompier volontaire depuis peu, ce qui m'a appris la rigueur, le travail d'équipe et la gestion du stress — des qualités essentielles dans le développement !",
+            "Au-delà du code, j'ai été jeune sapeur-pompier et maintenant pompier volontaire depuis peu, ce qui m'a appris la rigueur, le travail d'équipe et la gestion du stress, des qualités essentielles dans le développement !",
         ],
     },
     featuredProject: {

@@ -1,57 +1,178 @@
 ## Contexte & Objectifs
 
-Chichi Pizza est une pizzeria cherchant à moderniser sa présence en ligne. L'objectif était de créer un site vitrine simple, élégant et efficace qui mettrait en valeur leurs produits et faciliterait le contact avec les clients.
+StudX est une application développée pour résoudre un problème concret rencontré par les étudiants : l'absence d'API officielle pour accéder aux données de MyDigitalCampus. Face à cette limitation, j'ai créé une solution innovante permettant de récupérer et centraliser automatiquement toutes les informations étudiantes.
 
-### Besoins spécifiques
+### Problématique initiale
 
-- Site vitrine **moderne et appétissant**
-- Présentation du **menu** avec photos
-- Informations pratiques (horaires, localisation)
-- Design **responsive** et rapide à charger
+MyDigitalCampus, plateforme de gestion scolaire, ne fournit pas d'API publique pour accéder aux données étudiantes. Les étudiants devaient :
+
+- Se connecter manuellement à chaque fois pour consulter leurs notes
+- Naviguer entre plusieurs pages pour récupérer leurs informations
+- Ne pas avoir de vue d'ensemble centralisée de leur parcours
+- Perdre du temps à chercher des informations dispersées
+
+### Objectifs du projet
+
+- **Automatiser la récupération** des données depuis MyDigitalCampus
+- **Centraliser** toutes les informations étudiantes en un seul endroit
+- **Extraire automatiquement** : notes, absences, retards et emploi du temps
+- **Créer une interface** intuitive et moderne pour visualiser ces données
+- **Résoudre l'absence d'API** grâce à un système de parsing HTML robuste
 
 ## Solution & Approche
 
-### Stack technique simple et efficace
+### Architecture technique
 
-Pour ce projet, j'ai opté pour une stack légère mais performante :
+L'application repose sur une architecture permettant de simuler les interactions utilisateur avec la plateforme MyDigitalCampus :
 
-- **React + Vite** : Développement rapide et build optimisé
-- **Tailwind CSS** : Styling rapide et cohérent
-- **Hébergement statique** : Performances maximales et coûts minimaux
+- **Système de parsing HTML** : Extraction des données depuis les pages HTML renvoyées
+- **Authentification automatisée** : Gestion des sessions et cookies
+- **Scraping intelligent** : Navigation automatique entre les différentes pages
+- **Stockage local** : Sauvegarde des données pour consultation hors ligne
 
 ### Fonctionnalités principales
 
-#### Présentation des menus
+#### 📊 Extraction automatique des notes
 
-- Galerie de photos professionnelles des pizzas
-- Organisation par catégories
-- Prix clairement affichés
-- Descriptions alléchantes
+- Récupération de toutes les notes par matière
+- Calcul automatique des moyennes
+- Historique complet des évaluations
+- Visualisation graphique de l'évolution
 
-#### Informations pratiques
+#### 📅 Gestion de l'emploi du temps
 
-- Carte interactive avec localisation
-- Horaires d'ouverture
-- Numéros de téléphone cliquables
-- Liens vers les réseaux sociaux
+- Extraction automatique de l'emploi du temps hebdomadaire
+- Affichage par jour et par créneau
+- Détection des modifications et changements
+
+#### ⚠️ Suivi des absences et retards
+
+- Liste complète des absences justifiées et non justifiées
+- Compteur de retards
+
+#### 🔄 Synchronisation automatique
+
+- Mise à jour périodique des données
+- Détection des nouvelles informations
+- Notifications en cas de nouvelles notes ou absences
+- Mode hors ligne avec données en cache
+
+## Défis techniques
+
+### Parsing HTML robuste
+
+Le principal défi était de créer un système de parsing fiable face à :
+
+- **Structure HTML variable** : La plateforme pouvait modifier sa structure
+- **Sélecteurs CSS fragiles** : Nécessité de trouver des sélecteurs stables
+- **Données dynamiques** : Certaines informations chargées via JavaScript
+- **Gestion des erreurs** : Robustesse face aux changements de structure
+
+**Solutions implémentées :**
+
+- Utilisation de sélecteurs CSS multiples pour plus de résilience
+- Parsing avec plusieurs stratégies de fallback
+- Validation des données extraites avant stockage
+- Système de logs pour détecter les changements de structure
+
+### Gestion de l'authentification
+
+- **Sessions persistantes** : Maintien de la session entre les requêtes
+- **Gestion des cookies** : Conservation des tokens d'authentification
+- **Détection de déconnexion** : Reconnexion automatique si nécessaire
+- **Sécurité** : Stockage sécurisé des identifiants
+
+### Performance et fiabilité
+
+- **Requêtes optimisées** : Minimisation du nombre de requêtes HTTP
+- **Cache intelligent** : Éviter les requêtes inutiles
+- **Gestion des timeouts** : Retry automatique en cas d'échec
+- **Rate limiting** : Respect des limites de la plateforme
+
+## Stack technique
+
+### Technologies de scraping
+
+- **Puppeteer** : Parsing HTML côté serveur
+- **Axios** : Requêtes HTTP avec gestion des sessions
+
+### Frontend
+
+- **React** : Interface utilisateur moderne et réactive
+- **TypeScript** : Typage strict pour éviter les erreurs
+- **Nativewind CSS** : Styling rapide et cohérent
+
+### Stockage des données
+
+- **LocalStorage / AsyncStorage** : Stockage côté client
+- **Synchronisation** : Mise à jour incrémentale
 
 ## Résultats & Impact
 
-### Performance
+### Fonctionnalités livrées
 
-- ⚡ Site ultra-rapide grâce au build Vite
-- 📱 Parfaitement responsive
-- 🎨 Design moderne et appétissant
+- ✅ **Extraction automatique** de toutes les données étudiantes
+- ✅ **Interface moderne** et intuitive pour visualiser les informations
+- ✅ **Synchronisation automatique** avec MyDigitalCampus
+- ✅ **Mode hors ligne** avec données en cache
+- ✅ **Notifications** pour les nouvelles informations
 
-### Impact business
+### Impact utilisateur
 
-Le site a permis :
-- Meilleure **visibilité en ligne**
-- Augmentation des **appels téléphoniques**
-- Image de marque **modernisée**
+- **Gain de temps** : Plus besoin de naviguer manuellement sur la plateforme
+- **Vue centralisée** : Toutes les informations au même endroit
+- **Suivi facilité** : Meilleure compréhension de sa situation académique
+- **Accessibilité** : Consultation des données même hors ligne
+
+### Apprentissages techniques
+
+- **Web scraping avancé** : Techniques de parsing HTML robustes
+- **Gestion de sessions** : Authentification et maintien de sessions
+- **Résilience** : Gestion des erreurs et adaptation aux changements
+- **Architecture** : Conception d'un système de scraping maintenable
+
+## Défis rencontrés
+
+### Évolutivité de la plateforme
+
+Le principal défi était l'instabilité potentielle de la solution face aux mises à jour de MyDigitalCampus :
+
+- **Changements de structure** : La plateforme pouvait modifier son HTML
+- **Détection proactive** : Système d'alertes en cas d'échec de parsing
+- **Maintenance** : Nécessité de mettre à jour les sélecteurs régulièrement
+
+### Limitations techniques
+
+- **Absence d'API** : Contrainte imposée par la plateforme
+- **Rate limiting** : Respect des limites pour éviter le blocage
+- **Données dynamiques** : Certaines informations nécessitent JavaScript
 
 ## Ce que j'ai appris
 
-- **Vite** : Maîtrise du bundler moderne ultra-rapide
-- **Design simple** : Parfois moins c'est plus
-- **Performance** : Importance de l'optimisation des images dans la restauration
+### Compétences techniques
+
+- **Web scraping** : Maîtrise des techniques de parsing HTML
+- **Gestion de sessions** : Authentification automatisée et cookies
+- **Robustesse** : Création de systèmes résilients face aux changements
+- **Architecture** : Design de solutions maintenables
+
+### Compétences transversales
+
+- **Résolution de problèmes** : Trouver des solutions créatives en l'absence d'API
+- **Persévérance** : Gérer les défis techniques complexes
+- **Empathie utilisateur** : Comprendre les besoins réels des étudiants
+
+## Évolutions futures
+
+### Améliorations possibles
+
+- **API proxy** : Création d'une API intermédiaire pour d'autres applications
+- **Application mobile** : Version native iOS/Android
+- **Notifications push** : Alertes en temps réel pour nouvelles notes
+- **Analytics** : Statistiques détaillées sur la progression
+- **Export de données** : Génération de rapports PDF
+
+### Maintenance
+
+- **Monitoring** : Surveillance automatique des changements de structure
+- **Mise à jour automatique** : Adaptation aux modifications de MyDigitalCampus
